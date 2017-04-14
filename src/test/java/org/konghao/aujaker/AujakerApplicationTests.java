@@ -1,9 +1,7 @@
 package org.konghao.aujaker;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -80,6 +78,11 @@ public class AujakerApplicationTests {
 	@Test
 	public void testFile() {
 		modelService.generateModelsByProperties("d:/test/aujaker", "aujaker.properties");
+	}
+	
+	@Test
+	public void testXml() {
+		modelService.generateModelsByXml("d:/test/aujaker/xml", "stu.xml");
 	}
 
 }

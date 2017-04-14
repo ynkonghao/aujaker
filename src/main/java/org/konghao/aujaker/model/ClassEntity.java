@@ -34,6 +34,10 @@ public class ClassEntity {
 	private String author;
 	
 	private String tableName;
+	/**
+	 * 实体类的显示名称，在页面中可以通过后这个名称来显示管理信息，如:学生，在页面会显示学生管理!
+	 */
+	private String classShowName;
 	
 	public String getTableName() {
 		return tableName;
@@ -76,6 +80,12 @@ public class ClassEntity {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public String getClassShowName() {
+		return classShowName;
+	}
+	public void setClassShowName(String classShowName) {
+		this.classShowName = classShowName;
 	}
 	@Override
 	public String toString() {

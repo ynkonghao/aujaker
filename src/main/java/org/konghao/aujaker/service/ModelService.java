@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.konghao.aujaker.TestXml;
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
@@ -26,6 +31,10 @@ public class ModelService implements IModelService {
 
 	@Override
 	public void generateModel(String path, ClassEntity entity) {
+		File tf = new File(path);
+		if(!tf.exists()) {
+			tf.mkdirs();
+		}
 		path = path+"/src/main/java/"+CommonKit.packageToPath(entity.getPkgName());
 		File f = new File(path);
 		if(!f.exists()) f.mkdirs();
@@ -276,6 +285,103 @@ public class ModelService implements IModelService {
 		}
 		if(!CommonKit.isEmpty(claProps[3])&&!"-".equals(claProps[3].trim())) {
 			ce.setAuthor(claProps[3].trim());
+		}
+		if(!CommonKit.isEmpty(claProps[4])&&!"-".equals(claProps[4].trim())) {
+			ce.setClassShowName(claProps[4].trim());
+		}
+		return ce;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void generateModelsByXml(String path, String file) {
+		SAXReader reader = new SAXReader();
+		try {
+			Document d = reader.read(TestXml.class.getClassLoader().getResource("stu.xml"));
+			Element root = d.getRootElement();
+			Element ele = root.element("model");
+			String pkgs = ele.attributeValue("package");
+			List<Element> classes = ele.elements("class");
+			List<ClassEntity> ces = generateClassesByXml(classes,pkgs);
+			generateModels(path, ces);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<ClassEntity> generateClassesByXml(List<Element> classes,String pkgs) {
+		List<ClassEntity> ces = new ArrayList<ClassEntity>();
+		ClassEntity ce = null;
+		for(Element e:classes) {
+			ce = generateClassByEle(e);
+			ce.setPkgName(pkgs);
+			List<PropertiesBaseEntity> pbes = generatePropByEle(e);
+			ce.setProps(pbes);
+			ces.add(ce);
+		}
+		return ces;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<PropertiesBaseEntity> generatePropByEle(Element e) {
+		List<Element> props = e.element("properties").elements("prop");
+		System.out.println(props.size());
+		List<PropertiesBaseEntity> pbes = new ArrayList<PropertiesBaseEntity>();
+		PropertiesBaseEntity pbe = null;
+		for(Element prop:props) {
+			pbe = new PropertiesBaseEntity();
+			/*
+			 * name:属性的名称[必填]
+	 				columnName:字段名称，(可选，不填即是name)
+	 				type:字段类型[必填]
+	 				isLob:是否是二进制类型(可选，默认0,不是isLob)
+	 				comment:属性的注释(可选，但尽可能填写)
+	 				isPk:是否是主键(可选，默认是false，不是pk)
+	 				pkType:主键类型(可选，默认是0，自动递增的int)
+			 */
+			if(!CommonKit.isEmpty(prop.attributeValue("name"))) {
+				pbe.setName(prop.attributeValue("name"));
+			}
+			if(!CommonKit.isEmpty(prop.attributeValue("type"))) {
+				pbe.setType(prop.attributeValue("type"));
+			}
+			if(!CommonKit.isEmpty(prop.attributeValue("columnName"))) {
+				pbe.setColumnName(prop.attributeValue("columnName"));
+			}
+			if(!CommonKit.isEmpty(prop.attributeValue("isLob"))) {
+				pbe.setLob(Boolean.parseBoolean(prop.attributeValue("isLob")));
+			}
+			if(!CommonKit.isEmpty(prop.attributeValue("comment"))) {
+				pbe.setCommet(prop.attributeValue("comment"));
+			}
+			if(!CommonKit.isEmpty(prop.attributeValue("isPk"))) {
+				pbe.setPk(Boolean.parseBoolean(prop.attributeValue("isPk")));
+			}
+			if(!CommonKit.isEmpty(prop.attributeValue("pkType"))) {
+				pbe.setPkType(Integer.parseInt(prop.attributeValue("pkType")));
+			}
+			pbes.add(pbe);
+		}
+		return pbes;
+	}
+
+	private ClassEntity generateClassByEle(Element e) {
+		ClassEntity ce = new ClassEntity();
+		//className="Student" tableName="t_stu" comment="学生信息" author="ynkonghao" classShowName="学生"
+		if(!CommonKit.isEmpty(e.attributeValue("className"))) {
+			ce.setClassName(e.attributeValue("className"));
+		}
+		if(!CommonKit.isEmpty(e.attributeValue("tableName"))) {
+			ce.setTableName(e.attributeValue("tableName"));
+		}
+		if(!CommonKit.isEmpty(e.attributeValue("comment"))) {
+			ce.setTableName(e.attributeValue("comment"));
+		}
+		if(!CommonKit.isEmpty(e.attributeValue("author"))) {
+			ce.setTableName(e.attributeValue("author"));
+		}
+		if(!CommonKit.isEmpty(e.attributeValue("classShowName"))) {
+			ce.setTableName(e.attributeValue("classShowName"));
 		}
 		return ce;
 	}
