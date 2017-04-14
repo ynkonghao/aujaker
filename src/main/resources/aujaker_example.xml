@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <aujaker>
+	<!--项目的maven信息，groupId应该和model的package一致，artifactId就是项目的名称  -->
+	<maven groupId="org.konghao.aujaker" artifactId="hello_aujaker"/>
 	<!-- data表示数据库的基本信息
 		 type:表示数据库的类型，提供两种类型：mysql和sqlite3
 		 name:表示数据库的名称，sqlite3就是文件名

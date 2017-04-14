@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <aujaker>
+	<maven groupId="org.konghao.aujaker" artifactId="hello_aujaker"/>
 <!-- 数据库的信息 -->
 	<database type="mysql" name="msg_2017">
 		<username>root</username>

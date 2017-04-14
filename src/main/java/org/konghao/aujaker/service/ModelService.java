@@ -205,8 +205,9 @@ public class ModelService implements IModelService {
 		try {
 			Properties prop = new Properties();
 			prop.load(ModelService.class.getClassLoader().getResourceAsStream(file));
+			String artifactId = prop.getProperty("maven.artifactId");
 			List<ClassEntity> ents = generatorClassEntityByProp(prop);
-			this.generateModels(path, ents);
+			this.generateModels(path+"/"+artifactId, ents);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -296,13 +297,15 @@ public class ModelService implements IModelService {
 	public void generateModelsByXml(String path, String file) {
 		SAXReader reader = new SAXReader();
 		try {
-			Document d = reader.read(ModelService.class.getClassLoader().getResource("stu.xml"));
+			Document d = reader.read(ModelService.class.getClassLoader().getResource(file));
 			Element root = d.getRootElement();
 			Element ele = root.element("model");
+			Element maven = root.element("maven");
+			String artifactId = maven.attributeValue("artifactId");
 			String pkgs = ele.attributeValue("package");
 			List<Element> classes = ele.elements("class");
 			List<ClassEntity> ces = generateClassesByXml(classes,pkgs);
-			generateModels(path, ces);
+			generateModels(path+"/"+artifactId, ces);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
