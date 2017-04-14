@@ -13,7 +13,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.konghao.aujaker.TestXml;
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
@@ -297,7 +296,7 @@ public class ModelService implements IModelService {
 	public void generateModelsByXml(String path, String file) {
 		SAXReader reader = new SAXReader();
 		try {
-			Document d = reader.read(TestXml.class.getClassLoader().getResource("stu.xml"));
+			Document d = reader.read(ModelService.class.getClassLoader().getResource("stu.xml"));
 			Element root = d.getRootElement();
 			Element ele = root.element("model");
 			String pkgs = ele.attributeValue("package");
