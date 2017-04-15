@@ -6,5 +6,40 @@ package org.konghao.aujaker.service;
  *
  */
 public interface IConfigservice {
+	
+	public static final String MYSQL_DEP = "\t\t<dependency>\n"+
+			"\t\t\t<groupId>mysql</groupId>\n"+
+			"\t\t\t<artifactId>mysql-connector-java</artifactId>\n"+
+			"\t\t</dependency>";
+	
+	public static final String SQLITE_DEP = "\t\t<dependency>\n"+
+			"\t\t\t<groupId>org.xerial</groupId>\n"+
+			"\t\t\t<artifactId>sqlite-jdbc</artifactId>\n"+
+			"\t\t</dependency>";
+	
+	/**
+	 * 根据prop文件写properties
+	 * @param path
+	 * @param propFile
+	 */
+	public void generateApplicatoinPropertiesByProp(String path,String propFile);
+	/**
+	 * 根据xml文件写properties
+	 * @param path
+	 * @param xmlFile
+	 */
+	public void generateApplicationPropertiesByXml(String path,String xmlFile);
+	/**
+	 * 根据properties写pom，文件写在src文件夹中
+	 * @param path
+	 * @param propFile
+	 */
+	public void generatePomByProp(String path,String propFile);
+	/**
+	 * 根据xml写pom
+	 * @param path
+	 * @param xmlFile
+	 */
+	public void generatePomByXml(String path,String xmlFile);
 
 }

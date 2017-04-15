@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
+import org.konghao.aujaker.service.IConfigservice;
 import org.konghao.aujaker.service.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,9 @@ public class AujakerApplicationTests {
 	
 	@Autowired
 	private IModelService modelService;
+	
+	@Autowired
+	private IConfigservice configservice;
 	
 	@Test
 	public void testRead() {
@@ -73,6 +77,11 @@ public class AujakerApplicationTests {
 		entity.setProps(props);
 		
 		modelService.generateModel("d:/test/", entity);
+	}
+	
+	@Test
+	public void testConfigProp() {
+		configservice.generateApplicatoinPropertiesByProp("d:/test/aujaker/xml", "aujaker.properties");
 	}
 	
 	@Test

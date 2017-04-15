@@ -1,5 +1,10 @@
 package org.konghao.aujaker.kit;
 
+import java.io.IOException;
+import java.util.Properties;
+
+import org.konghao.aujaker.service.ModelService;
+
 /**
  * 通用工具集合
  * @author konghao
@@ -24,5 +29,16 @@ public class CommonKit {
 			return (Integer)obj==0;
 		}
 		return false;
+	}
+	
+	public static Properties readProperties(String file) {
+		try {
+			Properties prop = new Properties();
+			prop.load(CommonKit.class.getClassLoader().getResourceAsStream(file));
+			return prop;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

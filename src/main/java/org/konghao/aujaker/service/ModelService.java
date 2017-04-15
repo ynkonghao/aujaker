@@ -34,7 +34,7 @@ public class ModelService implements IModelService {
 		if(!tf.exists()) {
 			tf.mkdirs();
 		}
-		path = path+"/src/main/java/"+CommonKit.packageToPath(entity.getPkgName());
+		path = path+"/src/main/java/"+CommonKit.packageToPath(entity.getPkgName())+"/model";
 		File f = new File(path);
 		if(!f.exists()) f.mkdirs();
 		
@@ -222,7 +222,7 @@ public class ModelService implements IModelService {
 		for(String cla:clas) {
 			String claProp = prop.getProperty("classes."+cla);
 			ce = createClassEntity(claProp);
-			ce.setPkgName(pkg+".model");
+			ce.setPkgName(pkg);
 			List<PropertiesBaseEntity> pbes = createClassProperties(prop,cla);
 			ce.setProps(pbes);
 			ens.add(ce);
