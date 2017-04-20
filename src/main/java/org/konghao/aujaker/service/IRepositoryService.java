@@ -1,6 +1,6 @@
 package org.konghao.aujaker.service;
 
-import java.util.List;
+import java.util.Map;
 
 import org.konghao.aujaker.model.ClassEntity;
 
@@ -19,7 +19,7 @@ public interface IRepositoryService {
 	 * 根据实体类生成每个实体类的接口
 	 * @param entities
 	 */
-	public void generateRepository(List<ClassEntity> entities,String path);
+	public void generateRepository(Map<String,Object> maps,String path);
 	
-	public void generateRepository(ClassEntity entity,String path);
+	public void generateRepository(ClassEntity entity,String path,String artifactId);
 }

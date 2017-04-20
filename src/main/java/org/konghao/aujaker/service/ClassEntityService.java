@@ -29,10 +29,10 @@ public class ClassEntityService implements IClassEntityService {
 			prop.load(ModelService.class.getClassLoader().getResourceAsStream(file));
 			String artifactId = prop.getProperty("maven.artifactId");
 			String groupId = prop.getProperty("maven.groupId");
-			maps.put("artifactId", artifactId);
-			maps.put("groupId", groupId);
+			maps.put(FinalValue.ARTIFACT_ID, artifactId);
+			maps.put(FinalValue.GROUP_ID, groupId);
 			List<ClassEntity> ents = generatorClassEntityByProp(prop);
-			maps.put("entity", ents);
+			maps.put(FinalValue.ENTITY, ents);
 			return maps;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -131,13 +131,13 @@ public class ClassEntityService implements IClassEntityService {
 			Element maven = root.element("maven");
 			String artifactId = maven.attributeValue("artifactId");
 			String groupId = maven.attributeValue("groupId");
-			maps.put("artifactId", artifactId);
-			maps.put("groupId", groupId);
+			maps.put(FinalValue.ARTIFACT_ID, artifactId);
+			maps.put(FinalValue.GROUP_ID, groupId);
 			String pkgs = ele.attributeValue("package");
 			if(CommonKit.isEmpty(pkgs)) pkgs = groupId;
 			List<Element> classes = ele.elements("class");
 			List<ClassEntity> ces = generateClassesByXml(classes,pkgs);
-			maps.put("entity", ces);
+			maps.put(FinalValue.ENTITY, ces);
 			return maps;
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -230,6 +230,17 @@ public class ClassEntityService implements IClassEntityService {
 	@Override
 	public Map<String,Object> generateModelsByXml() {
 		return generateModelsByXml(FinalValue.XML_FILE);
+	}
+
+	@Override
+	public PropertiesBaseEntity getPrimaryProperties(ClassEntity ce) {
+		List<PropertiesBaseEntity> pbes = ce.getProps();
+		for(PropertiesBaseEntity pbe:pbes) {
+			if(pbe.isPk()) {
+				return pbe;
+			}
+		}
+		return null;
 	}
 
 }

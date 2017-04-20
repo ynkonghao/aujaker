@@ -2,6 +2,9 @@ package org.konghao.aujaker.service;
 
 import java.util.Map;
 
+import org.konghao.aujaker.model.ClassEntity;
+import org.konghao.aujaker.model.PropertiesBaseEntity;
+
 /**
  * 实体类的基本Service，用来根据xml或者prop生成一组实体类
  * @author konghao
@@ -25,4 +28,10 @@ public interface IClassEntityService {
 	public Map<String,Object> generateModelsByXml(String file);
 	
 	public Map<String,Object> generateModelsByXml();
+	/**
+	 * 根据实体类获取主键属性
+	 * @param ce
+	 * @return
+	 */
+	public PropertiesBaseEntity getPrimaryProperties(ClassEntity ce);
 }

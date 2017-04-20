@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
+import org.konghao.aujaker.model.FinalValue;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class ModelService implements IModelService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void generateModels(String path, Map<String,Object> maps) {
-		String artifactId = (String)maps.get("artifactId");
-		List<ClassEntity> entitys = (List<ClassEntity>)maps.get("entity");
+		String artifactId = (String)maps.get(FinalValue.ARTIFACT_ID);
+		List<ClassEntity> entitys = (List<ClassEntity>)maps.get(FinalValue.ENTITY);
 		for(ClassEntity ce:entitys) {
 			generateModel(path,ce,artifactId);
 		}
