@@ -3,7 +3,7 @@
 <aujaker>
 	<maven groupId="org.konghao.aujaker" artifactId="hello_aujaker"/>
 <!-- 数据库的信息 -->
-	<database type="mysql" name="msg_2017">
+	<database type="sqlite3" name="msg_2017">
 		<username>root</username>
 		<password>123456</password>
 		<url>jdbc:mysql://localhost:3306/aujaker</url>

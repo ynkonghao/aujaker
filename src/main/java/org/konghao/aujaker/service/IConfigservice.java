@@ -7,12 +7,12 @@ package org.konghao.aujaker.service;
  */
 public interface IConfigservice {
 	
-	public static final String MYSQL_DEP = "\t\t<dependency>\n"+
+	public static final String MYSQL_DEP = "<dependency>\n"+
 			"\t\t\t<groupId>mysql</groupId>\n"+
 			"\t\t\t<artifactId>mysql-connector-java</artifactId>\n"+
 			"\t\t</dependency>";
 	
-	public static final String SQLITE_DEP = "\t\t<dependency>\n"+
+	public static final String SQLITE_DEP = "<dependency>\n"+
 			"\t\t\t<groupId>org.xerial</groupId>\n"+
 			"\t\t\t<artifactId>sqlite-jdbc</artifactId>\n"+
 			"\t\t</dependency>";

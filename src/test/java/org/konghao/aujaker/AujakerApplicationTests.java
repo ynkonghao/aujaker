@@ -93,5 +93,17 @@ public class AujakerApplicationTests {
 	public void testXml() {
 		modelService.generateModelsByXml("d:/test/aujaker/xml", "stu.xml");
 	}
-
+	@Test
+	public void testPropertiesByXml() {
+		configservice.generateApplicationPropertiesByXml("d:/test/aujaker/xml", "stu.xml");
+	}
+	
+	@Test
+	public void testPomByproperties() {
+		configservice.generatePomByProp("f:/test/aujaker", "aujaker.properties");
+	}
+	@Test
+	public void testPomByXml() {
+		configservice.generatePomByXml("f:/test/aujaker/xml", "stu.xml");
+	}
 }

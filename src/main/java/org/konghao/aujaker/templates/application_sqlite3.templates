@@ -1,11 +1,11 @@
 #\u5f00\u542f\u5305\u7684\u81ea\u52a8\u626b\u63cf
-entitymanager.packagesToScan= #{package}
+entitymanager.packagesToScan= {package}
 
 # \u6570\u636e\u5e93\u8fde\u63a5
-spring.datasource.url=#{url}
+spring.datasource.url={url}
 
 # \u6570\u636e\u5e93\u9a71\u52a8
-spring.datasource.driver-class-name=#{driver}
+spring.datasource.driver-class-name={driver}
 
 # \u81ea\u52a8\u66f4\u65b0\u8868
 spring.jpa.properties.hibernate.hbm2ddl.auto=update
