@@ -21,6 +21,7 @@ public class AujakerApplicationTests {
 	@Autowired
 	private IModelService modelService;
 	
+	
 	@Autowired
 	private IConfigservice configservice;
 	
@@ -76,22 +77,6 @@ public class AujakerApplicationTests {
 		
 		entity.setProps(props);
 		
-		modelService.generateModel("d:/test/", entity);
+		modelService.generateModel("d:/test/", entity,"hello");
 	}
-	
-	@Test
-	public void testConfigProp() {
-		configservice.generateApplicatoinPropertiesByProp("d:/test/aujaker/xml", "aujaker.properties");
-	}
-	
-	@Test
-	public void testFile() {
-		modelService.generateModelsByProperties("d:/test/aujaker", "aujaker.properties");
-	}
-	
-	@Test
-	public void testXml() {
-		modelService.generateModelsByXml("d:/test/aujaker/xml", "stu.xml");
-	}
-
 }
