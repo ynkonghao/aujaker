@@ -76,7 +76,7 @@ public class AujakerApplicationTests {
 		
 		entity.setProps(props);
 		
-		modelService.generateModel("d:/test/", entity);
+		//modelService.generateModel("d:/test/", entity);
 	}
 	
 	@Test
@@ -86,12 +86,12 @@ public class AujakerApplicationTests {
 	
 	@Test
 	public void testFile() {
-		modelService.generateModelsByProperties("d:/test/aujaker", "aujaker.properties");
+		//modelService.generateModelsByProperties("d:/test/aujaker", "aujaker.properties");
 	}
 	
 	@Test
 	public void testXml() {
-		modelService.generateModelsByXml("d:/test/aujaker/xml", "stu.xml");
+		//modelService.generateModelsByXml("d:/test/aujaker/xml", "stu.xml");
 	}
 	@Test
 	public void testPropertiesByXml() {
