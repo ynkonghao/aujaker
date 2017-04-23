@@ -7,13 +7,13 @@
 		<username>root</username>
 		<password>123456</password>
 		<url>jdbc:mysql://localhost:3306/aujaker</url>
-		<driver>com.mysql.jdbc.Driver</driver>
+		<driver>com.mysql.jdbc.Driver</driver> 
 	</database>
 
 <!-- model中存储了所有的实体类，package必须写，说明数据库的包 -->
 	 <model package="org.konghao.aujaker">
 	 	<class className="Student" tableName="t_stu" comment="学生信息" author="ynkonghao" classShowName="学生">
-	 		<properties>
+		 	<properties>
 	 			<prop name="id" columnName="id" type="int" isLob="false" comment="学生id" isPk="true" pkType="0"/>
 	 			<prop name="name" type="String" comment="学生名称" />
 	 			<prop name="sfzh" type="String" comment="身份证号"/>

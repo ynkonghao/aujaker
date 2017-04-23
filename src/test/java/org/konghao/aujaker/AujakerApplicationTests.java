@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
+import org.konghao.aujaker.service.ICheckFileService;
 import org.konghao.aujaker.service.IConfigservice;
 import org.konghao.aujaker.service.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class AujakerApplicationTests {
 	
 	@Autowired
 	private IConfigservice configservice;
+	
+	@Autowired
+	private ICheckFileService checkFileService;
 	
 	@Test
 	public void testRead() {
@@ -105,5 +109,10 @@ public class AujakerApplicationTests {
 	@Test
 	public void testPomByXml() {
 		configservice.generatePomByXml("f:/test/aujaker/xml", "stu.xml");
+	}
+	
+	@Test
+	public void testXmlCheckFile() {
+		checkFileService.checkXmlFile("aujaker.xml");
 	}
 }
