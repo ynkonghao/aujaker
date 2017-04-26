@@ -21,6 +21,8 @@ public class ProjectService implements IProjectService {
 	private IClassEntityService classEntityService;
 	@Autowired
 	private ICheckFileService checkFileService;
+	@Autowired
+	private ITestTemplatesService testTemplatesService;
 	
 	@Override
 	public void initProject(String path) {
@@ -32,6 +34,7 @@ public class ProjectService implements IProjectService {
 		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
 		repositoryService.generateRepository(maps, path);
 		businessService.generateService(maps, path);
+		testTemplatesService.generateTestTemplate(path, maps, ITestTemplatesService.SERVICE_TYPE);
 	}
 
 }

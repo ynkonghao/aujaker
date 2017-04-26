@@ -138,6 +138,20 @@ public class CommonKit {
 		return cname;
 	}
 	
+	public static String lowcaseFirst(String val) 
+	{
+		return val.substring(0,1).toLowerCase()+val.substring(1);
+	}
+	
+	public static String generateTestPath(String path,String artifactId,ClassEntity ce,String type) {
+		String npath = path+"/"+artifactId;
+		npath = npath+"/src/test/java/"+CommonKit.packageToPath(ce.getPkgName())+"/"+lowcaseFirst(type);
+		File f = new File(npath);
+		if(!f.exists())
+			f.mkdirs();
+		return npath;
+	}
+	
 	public static String generatePath(String path,String artifactId,ClassEntity entity,String fun) {
 		String npath = path+"/"+artifactId;
 		npath = npath+"/src/main/java/"+CommonKit.packageToPath(entity.getPkgName())+"/"+fun;

@@ -33,7 +33,7 @@ public class BusinessService implements IBusinessService {
 	 * @param path
 	 */
 	private void generateServiceImpl(ClassEntity entity, String path) {
-		String file = path+"/"+entity.getClassName()+"ServiceImpl.java";
+		String file = path+"/"+entity.getClassName()+"Service.java";
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(file);
@@ -51,7 +51,7 @@ public class BusinessService implements IBusinessService {
 			sb.append("import org.springframework.transaction.annotation.Transactional;\n\n");
 			//生成类
 			sb.append("@Service\n");
-			sb.append("public class ").append(entity.getClassName()).append("ServiceImpl ")
+			sb.append("public class ").append(entity.getClassName()).append("Service ")
 			  .append("implements I").append(entity.getClassName()).append("Service {\n");
 			
 			//生成Repository的注入
