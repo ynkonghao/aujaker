@@ -12,10 +12,6 @@ import org.konghao.aujaker.model.ClassEntity;
 public interface IRepositoryService {
 
 	/**
-	 * 将baseSrc中的路径拷贝到路径中
-	 */
-	public void copyBaseSrc(String path);
-	/**
 	 * 根据实体类生成每个实体类的接口
 	 * @param entities
 	 */

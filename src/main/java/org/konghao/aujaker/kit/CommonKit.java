@@ -1,5 +1,6 @@
 package org.konghao.aujaker.kit;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -7,6 +8,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.konghao.aujaker.model.ClassEntity;
+import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.konghao.aujaker.service.ModelService;
 
 
@@ -87,5 +90,60 @@ public class CommonKit {
 		Element maven = root.element("maven");
 		String groupId = maven.attributeValue("groupId");
 		return groupId;
+	}
+	/**
+	 * 获得主键类型
+	 * @param ce
+	 * @return
+	 */
+	public static String getPkType(ClassEntity ce) {
+		for(PropertiesBaseEntity pbe:ce.getProps()) {
+			if(pbe.isPk()) {
+				return pbe.getType();
+			}
+		}
+		//默认是Integer
+		return "Integer";
+	}
+	
+	public static String getObjType(String type) {
+		if(type.equals("int")) {
+			return "Integer";
+		} else if(type.equals("double")) {
+			return "Double";
+		} else if(type.equals("float")) {
+			return "Float";
+		} else if(type.equals("char")) {
+			return "Character";
+		} else if(type.equals("byte")) {
+			return "Byte";
+		} else if(type.equals("short")) {
+			return "Short";
+		} else if(type.equals("boolean")) {
+			return "Boolean";
+		} else if(type.equals("long")) {
+			return "Long";
+		}
+		return type;
+	}
+	
+	/**
+	 * 生成变量名称，把第一个字母改成小写
+	 * @param ce
+	 * @return
+	 */
+	public static String generateVarName(ClassEntity ce) {
+		String cname = ce.getClassName();
+		cname = cname.substring(0,1).toLowerCase()+cname.substring(1);
+		return cname;
+	}
+	
+	public static String generatePath(String path,String artifactId,ClassEntity entity,String fun) {
+		String npath = path+"/"+artifactId;
+		npath = npath+"/src/main/java/"+CommonKit.packageToPath(entity.getPkgName())+"/"+fun;
+		File f = new File(npath);
+		if(!f.exists())
+			f.mkdirs();
+		return npath;
 	}
 }

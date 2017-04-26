@@ -1,6 +1,5 @@
 package org.konghao.aujaker.service;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -30,15 +29,7 @@ public class ModelService implements IModelService {
 
 	@Override
 	public void generateModel(String path, ClassEntity entity,String artifactId) {
-		path = path+"/"+artifactId;
-		File tf = new File(path);
-		if(!tf.exists()) {
-			tf.mkdirs();
-		}
-		path = path+"/src/main/java/"+CommonKit.packageToPath(entity.getPkgName())+"/model";
-		File f = new File(path);
-		if(!f.exists()) f.mkdirs();
-		
+		path = CommonKit.generatePath(path, artifactId, entity, "model");
 		PrintStream ps = null;
 		try {
 			ps = new PrintStream(new FileOutputStream(path+"/"+entity.getClassName()+".java"));
@@ -58,7 +49,7 @@ public class ModelService implements IModelService {
 	 */
 	private void generateTop(ClassEntity entity, PrintStream ps) {
 		//输出包名
-		ps.println("package "+entity.getPkgName()+";");
+		ps.println("package "+entity.getPkgName()+".model;");
 		//输出两个空行
 		newLine(ps);
 		newLine(ps);

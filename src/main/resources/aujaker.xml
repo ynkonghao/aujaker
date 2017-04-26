@@ -22,7 +22,7 @@
 	 		</properties>
 	 	</class>
 	 	
-	 	<class className="Classroom" tableName="t_classroom" comment="班级信息"  classShowName="班级">
+	 	<class className="Classroom" tableName="t_classroom" comment="班级信息" author="ynkonghao" classShowName="班级">
 	 		<properties>
 	 			<prop name="id" columnName="id" type="int" isLob="false" comment="班级id" isPk="true" pkType="0"/>
 	 			<prop name="grade" type="Integer" comment="年级" />

@@ -19,10 +19,6 @@ public class RepositoryTests {
 	@Autowired
 	private IClassEntityService classEntityService;
 	
-	@Test
-	public void testBaseUrl() {
-		repoistoryService.copyBaseSrc("d:/test/aujaker/");
-	}
 	
 	@Test
 	public void testGenerateRepository() {

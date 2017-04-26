@@ -3,7 +3,6 @@ package org.konghao.aujaker.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -14,6 +13,7 @@ import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.AujakerException;
 import org.springframework.stereotype.Service;
 
+@SuppressWarnings("unchecked")
 @Service
 public class CheckFileService implements ICheckFileService {
 
@@ -33,12 +33,12 @@ public class CheckFileService implements ICheckFileService {
 		// 当前节点的名称、文本内容和属性
 		// System.out.println("当前节点名称：" + node.getName());
 		// System.out.println("当前节点的内容："+node.getTextTrim());
-		List<Attribute> listAttr = node.attributes();
-		for (Attribute attr : listAttr) {
+		//List<Attribute> listAttr = node.attributes();
+		/*for (Attribute attr : listAttr) {
 			String name = attr.getName();
 			String value = attr.getValue();
 			// System.out.println("属性名称：" + name);
-		}
+		}*/
 		checkNodes(node);
 		// 递归遍历当前节点所有的子节点
 		List<Element> listElement = node.elements();// 所有一级子节点的list
@@ -73,9 +73,9 @@ public class CheckFileService implements ICheckFileService {
 			elements.add(e.getName());
 		}
 
-		for (String attr : nodeAttr) {
+		/*for (String attr : nodeAttr) {
 			System.out.println("attr:" + attr);
-		}
+		}*/
 
 		String name = node.getName();
 		// System.out.println("name:"+name);
@@ -92,6 +92,11 @@ public class CheckFileService implements ICheckFileService {
 				throw new AujakerException("文件不合法，节点不正确！");
 			}
 		}
+	}
+
+	@Override
+	public void checkXmlFile() {
+		checkXmlFile("aujaker.xml");
 	}
 
 	/*@Override

@@ -6,24 +6,46 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.lang.model.util.Elements;
-
+import org.apache.commons.io.FileUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.konghao.aujaker.kit.CommonKit;
-import org.konghao.aujaker.model.ClassEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Configservice implements IConfigservice {
+public class Configservice implements IConfigService {
+	
+	private final static String BASE_URL = "baseSrc";
 
+	@Override
+	public void copyBaseSrc(String path,String artifactId) {
+		try {
+			File f = new File(
+					RepositoryService.class.getClassLoader().getResource(BASE_URL).getFile());
+			File[] files = f.listFiles();
+			for(File file:files) {
+				String name = file.getName();
+				File dest = new File(path+"/"+artifactId+"/src/main/java/"+name);
+				if(file.isFile()) {
+					if(!dest.exists()) dest.createNewFile();
+					FileUtils.copyFile(file, dest);
+				} else {
+					if(!dest.exists()) dest.mkdirs();
+					FileUtils.copyDirectory(file, dest);
+				}
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void generateApplicatoinPropertiesByProp(String path, String propFile) {
 		Map<String,String> configs = readConfigByProperties(propFile);
@@ -200,9 +222,9 @@ public class Configservice implements IConfigservice {
 		cfgs.put("{artifactId}", prop.getProperty("maven.artifactId"));
 		cfgs.put("{driver}", prop.getProperty("database.driver"));
 		if(type.equals("mysql")) {
-			cfgs.put("{databaseDriverConnection}", this.MYSQL_DEP);
+			cfgs.put("{databaseDriverConnection}", MYSQL_DEP);
 		} else if(type.equals("sqlite3")) {
-			cfgs.put("{databaseDriverConnection}", this.SQLITE_DEP);
+			cfgs.put("{databaseDriverConnection}", SQLITE_DEP);
 		}
 		
 		return cfgs;
@@ -229,10 +251,10 @@ public class Configservice implements IConfigservice {
 					fileStr = fileStr.replace(key, configs.get(key));
 				}
 			}
-			String nPath = path+"/"+configs.get("{artifactId}")+"/src/main/resources";
+			String nPath = path+"/"+configs.get("{artifactId}");
 			File f = new File(nPath);
 			if(!f.exists()) f.mkdirs();
-			fw = new FileWriter(f+"/pom.templates");
+			fw = new FileWriter(f+"/pom.xml");
 			fw.write(fileStr);
  		} catch (IOException e) {
 			e.printStackTrace();
@@ -272,9 +294,9 @@ public class Configservice implements IConfigservice {
 			configs.put("{groupId}",groupId);
 			System.out.println(databaseType);
 			if(databaseType.equals("mysql")) {
-				configs.put("{databaseDriverConnection}", this.MYSQL_DEP);
+				configs.put("{databaseDriverConnection}", MYSQL_DEP);
 			} else if(databaseType.equals("sqlite3")) {
-				configs.put("{databaseDriverConnection}", this.SQLITE_DEP);
+				configs.put("{databaseDriverConnection}", SQLITE_DEP);
 			}
 			return configs;
 		} catch (DocumentException e) {

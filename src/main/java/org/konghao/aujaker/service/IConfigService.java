@@ -5,7 +5,7 @@ package org.konghao.aujaker.service;
  * @author konghao
  *
  */
-public interface IConfigservice {
+public interface IConfigService {
 	
 	public static final String MYSQL_DEP = "<dependency>\n"+
 			"\t\t\t<groupId>mysql</groupId>\n"+
@@ -41,5 +41,10 @@ public interface IConfigservice {
 	 * @param xmlFile
 	 */
 	public void generatePomByXml(String path,String xmlFile);
+	
+	/**
+	 * 将baseSrc中的路径拷贝到路径中
+	 */
+	public void copyBaseSrc(String path,String artifactId);
 
 }
