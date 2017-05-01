@@ -65,7 +65,11 @@ public class Configservice implements IConfigService {
 			} else if("sqlite3".equals(database)) {
 				tfile = "application_sqlite3.templates";
 				String dbname = configs.get("{dataname}");
-				File dbFile = new File(path+"/"+configs.get("{artifactId}")+"/src/main/resources/"+dbname);
+				String filePath = path+"/"+configs.get("{artifactId}")+"/src/main/resources/";
+				File file = new File(filePath);
+				if(!file.exists()) file.mkdirs();
+				
+				File dbFile = new File(filePath+dbname);
 				if(!dbFile.exists()) dbFile.createNewFile();
 			}
 			br = new BufferedReader(new InputStreamReader(

@@ -11,7 +11,7 @@ import org.konghao.aujaker.model.ClassEntity;
  */
 public interface ITestTemplatesService {
 	public static final String SERVICE_TYPE = "Service";
-	public static final String REPOS_TYPE = "Repoistory";
+	public static final String REPOS_TYPE = "Repository";
 	/**
 	 * 生成一个测试模板
 	 * @param path

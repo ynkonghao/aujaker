@@ -23,6 +23,8 @@ public class ProjectService implements IProjectService {
 	private ICheckFileService checkFileService;
 	@Autowired
 	private IControllerService controllerService;
+	@Autowired
+	private ITestTemplatesService testTemplatesService;
 	
 	@Override
 	public void initProject(String path) {
@@ -35,6 +37,7 @@ public class ProjectService implements IProjectService {
 		repositoryService.generateRepository(maps, path);
 		businessService.generateService(maps, path);
 		controllerService.generateControllers(path, maps);
+		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
 	}
 
 }
