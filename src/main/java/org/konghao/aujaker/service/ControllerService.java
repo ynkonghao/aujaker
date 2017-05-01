@@ -168,10 +168,18 @@ public class ControllerService implements IControllerService {
 		ps.println("import java.lang.reflect.InvocationTargetException;");
 		ps.println("import javax.servlet.http.HttpServletRequest;");
 		ps.println("import org.apache.commons.beanutils.BeanUtils;");
-		ps.println("import "+groupId+"reposiotry.kit.SimplePageBuilder;");
+		ps.println("import "+groupId+".reposiotry.kit.SimplePageBuilder;");
 		ps.println("import "+groupId+".model."+entity.getClassName()+";");
 		ps.println("import "+groupId+".service"+".I"+entity.getClassName()+"Service"+";");
-		ps.println("import org.springframework.*;");
+		ps.println("import org.springframework.beans.factory.annotation.Autowired;");
+		ps.println("import org.springframework.data.domain.Page;");
+		ps.println("import org.springframework.stereotype.Controller;");
+		ps.println("import org.springframework.ui.Model;");
+		ps.println("import org.springframework.web.bind.annotation.PathVariable;");
+		ps.println("import org.springframework.web.bind.annotation.RequestMapping;");
+		ps.println("import org.springframework.web.bind.annotation.RequestMethod;");
+		
+	
 	}
 
 }
