@@ -58,13 +58,15 @@ public class Configservice implements IConfigService {
 		FileWriter fw = null;
 		try {
 			String database = configs.get("{dataType}");
-			System.out.println(database);
+//			System.out.println(database);
 			String tfile = null;
 			if("mysql".equals(database)) {
 				tfile = "application_mysql.templates";
 			} else if("sqlite3".equals(database)) {
 				tfile = "application_sqlite3.templates";
-				writeSqlite3Dialect(path,configs.get("{artifactId}"));
+				String dbname = configs.get("{dataname}");
+				File dbFile = new File(path+"/"+configs.get("{artifactId}")+"/src/main/resources/"+dbname);
+				if(!dbFile.exists()) dbFile.createNewFile();
 			}
 			br = new BufferedReader(new InputStreamReader(
 						(Configservice.class.getClassLoader()
@@ -109,45 +111,6 @@ public class Configservice implements IConfigService {
 		
 	}
 
-	/**
-	 * 拷贝sqlite3的方言
-	 * @param path
-	 */
-	private void writeSqlite3Dialect(String path,String artifactId) {
-		String packages = "com.enigmabridge.hibernate.dialect";
-		String pfile = packages.replace(".", "/");
-		String rPath = path+"/"+artifactId+"/src/main/java/"+pfile;
-		BufferedReader br = null;
-		FileWriter fw = null;
-		File f = new File(rPath);
-		try {
-			if (!f.exists()) {
-				f.mkdirs();
-			}
-			rPath= f+"/SQLiteDialect.java";
-			br = new BufferedReader(new InputStreamReader
-					(Configservice.class.getClassLoader().getResourceAsStream("org/konghao/aujaker/templates/SQLiteDialect.templates")));
-			fw = new FileWriter(rPath);
-			String str = null;
-			while((str=br.readLine())!=null) {
-				fw.write(str);
-				fw.write("\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(br!=null) br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
-				if(fw!=null) fw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	private Map<String, String> readConfigByProperties(String propFile) {
 		Properties prop = CommonKit.readProperties(propFile);
@@ -292,7 +255,7 @@ public class Configservice implements IConfigService {
 			configs.put("{artifactId}",artifactId);
 			configs.put("{dataType}", databaseType);
 			configs.put("{groupId}",groupId);
-			System.out.println(databaseType);
+//			System.out.println(databaseType);
 			if(databaseType.equals("mysql")) {
 				configs.put("{databaseDriverConnection}", MYSQL_DEP);
 			} else if(databaseType.equals("sqlite3")) {

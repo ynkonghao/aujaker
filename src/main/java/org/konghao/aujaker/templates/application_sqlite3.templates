@@ -11,7 +11,7 @@ spring.datasource.driver-class-name={driver}
 spring.jpa.properties.hibernate.hbm2ddl.auto=update
 
 # \u4f7f\u7528MYSQL5\u4f5c\u4e3a\u6570\u636e\u5e93\u8bbf\u95ee\u65b9\u8a00
-spring.jpa.properties.hibernate.dialect=com.enigmabridge.hibernate.dialect.SQLiteDialect
+spring.jpa.properties.hibernate.dialect=org.konghao.sqlite.SQLiteDialect
 
 #\u663e\u793asql\u8bed\u53e5
 spring.jpa.properties.hibernate.show_sql=true

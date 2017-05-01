@@ -2,12 +2,17 @@
 
 <aujaker>
 	<maven groupId="org.konghao.aujaker" artifactId="hello_aujaker1"/>
-<!-- 数据库的信息 -->
+<!-- 数据库的信息
 	<database type="mysql" name="msg_2017">
 		<username>root</username>
 		<password>123456</password>
 		<url>jdbc:mysql://localhost:3306/aujaker</url>
 		<driver>com.mysql.jdbc.Driver</driver> 
+	</database>
+ -->
+ 	<database type="sqlite3" name="stu.db">
+		<url>jdbc:sqlite::resource:stu.db</url>
+		<driver>org.sqlite.JDBC</driver> 
 	</database>
 
 <!-- model中存储了所有的实体类，package必须写，说明数据库的包 -->

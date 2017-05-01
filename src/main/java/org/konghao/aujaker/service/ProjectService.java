@@ -22,7 +22,7 @@ public class ProjectService implements IProjectService {
 	@Autowired
 	private ICheckFileService checkFileService;
 	@Autowired
-	private ITestTemplatesService testTemplatesService;
+	private IControllerService controllerService;
 	
 	@Override
 	public void initProject(String path) {
@@ -34,7 +34,7 @@ public class ProjectService implements IProjectService {
 		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
 		repositoryService.generateRepository(maps, path);
 		businessService.generateService(maps, path);
-		testTemplatesService.generateTestTemplate(path, maps, ITestTemplatesService.SERVICE_TYPE);
+		controllerService.generateControllers(path, maps);
 	}
 
 }

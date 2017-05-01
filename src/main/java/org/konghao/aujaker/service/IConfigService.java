@@ -15,6 +15,7 @@ public interface IConfigService {
 	public static final String SQLITE_DEP = "<dependency>\n"+
 			"\t\t\t<groupId>org.xerial</groupId>\n"+
 			"\t\t\t<artifactId>sqlite-jdbc</artifactId>\n"+
+			"\t\t\t<version>3.7.2</version>\n"+
 			"\t\t</dependency>";
 	
 	/**

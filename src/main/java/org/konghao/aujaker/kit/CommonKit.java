@@ -129,6 +129,7 @@ public class CommonKit {
 	
 	/**
 	 * 生成变量名称，把第一个字母改成小写
+	 * Student student
 	 * @param ce
 	 * @return
 	 */
@@ -137,7 +138,11 @@ public class CommonKit {
 		cname = cname.substring(0,1).toLowerCase()+cname.substring(1);
 		return cname;
 	}
-	
+	/**
+	 * 把字符串的第一个字母转换为小写
+	 * @param val
+	 * @return
+	 */
 	public static String lowcaseFirst(String val) 
 	{
 		return val.substring(0,1).toLowerCase()+val.substring(1);

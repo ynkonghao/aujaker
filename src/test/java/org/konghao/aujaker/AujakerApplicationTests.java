@@ -2,6 +2,7 @@ package org.konghao.aujaker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -9,7 +10,9 @@ import org.junit.runner.RunWith;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.konghao.aujaker.service.ICheckFileService;
+import org.konghao.aujaker.service.IClassEntityService;
 import org.konghao.aujaker.service.IConfigService;
+import org.konghao.aujaker.service.IControllerService;
 import org.konghao.aujaker.service.IModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +31,11 @@ public class AujakerApplicationTests {
 	@Autowired
 	private ICheckFileService checkFileService;
 	
+	@Autowired
+	private IControllerService conctrollerService;
+	
+	@Autowired
+	private IClassEntityService classEntityService;
 	@Test
 	public void testRead() {
 		Properties properties = System.getProperties(); 
@@ -114,5 +122,11 @@ public class AujakerApplicationTests {
 	@Test
 	public void testXmlCheckFile() {
 		checkFileService.checkXmlFile("aujaker.xml");
+	}
+	
+	@Test
+	public void testController() {
+		Map<String,Object> models = classEntityService.generateModelsByXml("aujaker.xml");
+		conctrollerService.generateControllers("d:/test/controller",models);
 	}
 }
