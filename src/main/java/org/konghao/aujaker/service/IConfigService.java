@@ -47,5 +47,11 @@ public interface IConfigService {
 	 * 将baseSrc中的路径拷贝到路径中
 	 */
 	public void copyBaseSrc(String path,String artifactId);
+	/**
+	 * 生成springboot的Application程序
+	 * @param path
+	 * @param artifactId
+	 */
+	public void generateApplicationConfig(String path,String groupId,String artifactId);
 
 }

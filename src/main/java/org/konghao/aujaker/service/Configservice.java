@@ -272,4 +272,39 @@ public class Configservice implements IConfigService {
 		return null;
 	}
 
+	@Override
+	public void generateApplicationConfig(String path,String groupId,String artifactId) {
+		String npath = CommonKit.generateApplicationPath(path, groupId, artifactId);
+		String afile = CommonKit.upcaseFirst(artifactId)+"Application.java";
+		StringBuffer sb = new StringBuffer();
+		sb.append("package ").append(groupId).append(";\n");
+		sb.append("import org.konghao.reposiotry.base.BaseRepositoryFactoryBean;\n");
+		sb.append("import org.springframework.boot.SpringApplication;\n");
+		sb.append("import org.springframework.data.jpa.repository.config.EnableJpaRepositories;\n");
+		sb.append("import org.springframework.boot.autoconfigure.SpringBootApplication;\n\n");
+		sb.append("@EnableJpaRepositories(basePackages = {\"").append(groupId).append("\"},\n")
+			.append("\trepositoryFactoryBeanClass = BaseRepositoryFactoryBean.class//指定自己的工厂\n");
+		sb.append(")\n");
+		sb.append("@SpringBootApplication\n");
+		sb.append("public class ").append(CommonKit.upcaseFirst(artifactId)).append("Application {\n");
+		sb.append("\tpublic static void main(String[] args) {\n");
+		sb.append("\t\tSpringApplication.run("+CommonKit.upcaseFirst(artifactId)+"Application.class,args);\n");
+		sb.append("\t}\n");
+		sb.append("}\n");
+		
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter(npath+"/"+afile);
+			fw.write(sb.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(fw!=null) fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

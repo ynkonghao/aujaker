@@ -1,5 +1,6 @@
 package org.konghao.aujaker;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.konghao.aujaker.service.IProjectService;
@@ -17,4 +18,10 @@ public class ProjectServiceTest {
 	public void testInit() {
 		projectService.initProject("d:/test/mp");
 	}
+	
+	@Test
+	public void testPackage() {
+		projectService.mvnPackage("d:/test/mp","helloAujaker");
+	}
+	
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <aujaker>
-	<maven groupId="org.konghao.aujaker" artifactId="hello_aujaker1"/>
+	<maven groupId="org.konghao.aujaker" artifactId="helloAujaker"/>
 <!-- 数据库的信息
 	<database type="mysql" name="msg_2017">
 		<username>root</username>
@@ -16,7 +16,7 @@
 	</database>
 
 <!-- model中存储了所有的实体类，package必须写，说明数据库的包 -->
-	 <model package="org.konghao.aujaker">
+	 <model>
 	 	<class className="Student" tableName="t_stu" comment="学生信息" author="ynkonghao" classShowName="学生">
 		 	<properties>
 	 			<prop name="id" columnName="id" type="int" isLob="false" comment="学生id" isPk="true" pkType="0"/>

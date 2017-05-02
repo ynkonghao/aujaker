@@ -134,6 +134,7 @@ public class ClassEntityService implements IClassEntityService {
 			maps.put(FinalValue.ARTIFACT_ID, artifactId);
 			maps.put(FinalValue.GROUP_ID, groupId);
 			String pkgs = ele.attributeValue("package");
+			//如果没有写包的名称，使用groupId作为基本包
 			if(CommonKit.isEmpty(pkgs)) pkgs = groupId;
 			List<Element> classes = ele.elements("class");
 			List<ClassEntity> ces = generateClassesByXml(classes,pkgs);
