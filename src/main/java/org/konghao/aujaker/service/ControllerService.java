@@ -3,15 +3,12 @@ package org.konghao.aujaker.service;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.FinalValue;
-import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -90,16 +87,19 @@ public class ControllerService implements IControllerService {
 				+" = "+entity.getClassName().toLowerCase()+"Service.find(SimplePageBuilder.generate(offset));");
 		ps.println("\t\tmodel.addAttribute(\""+entity.getClassName().toLowerCase()+"s\", "+
 				entity.getClassName().toLowerCase()+"s);");
-		ps.println("\t\trenturn "+"\""+entity.getClassName().toLowerCase()+"/show\";");
+		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/show\";");
 		ps.println("\t}");
 	}
 
+	//TODO 所有主键类型都需要根据entity来处理,CommonKit.getPkType(ce)可以获取主键类型，
+	//TODO 获取变量的名称不能直接使用toLowerCase,如果数据类型是StudentLesson名称就不对了!
 	private void generateUpdatePost(ClassEntity entity, PrintStream ps) {
+		
 		ps.println("\t@RequestMapping(value=\"/update/{id}\",method=RequestMethod.POST)");
-		ps.println("\tpublic String update(@PathVariable int id,Student student) {");
+		ps.println("\tpublic String update(@PathVariable int id,"+entity.getClassName()+" "+CommonKit.lowcaseFirst(entity.getClassName())+") {");
 		ps.println("\t\ttry {");
 		ps.println("\t\t\t"+entity.getClassName()+" t"+entity.getClassName().toLowerCase()
-				+" = "+entity.getClassName().toLowerCase()+"Seivice.load(id);");
+				+" = "+entity.getClassName().toLowerCase()+"Service.load(id);");
 		ps.println("\t\t\tBeanUtils.copyProperties(t"+entity.getClassName().toLowerCase()+", "+
 				entity.getClassName().toLowerCase()+");");
 		ps.println("\t\t\t"+entity.getClassName().toLowerCase()+"Service.update(t"+entity.getClassName().toLowerCase()+");");
@@ -168,7 +168,7 @@ public class ControllerService implements IControllerService {
 		ps.println("import java.lang.reflect.InvocationTargetException;");
 		ps.println("import javax.servlet.http.HttpServletRequest;");
 		ps.println("import org.apache.commons.beanutils.BeanUtils;");
-		ps.println("import "+groupId+".reposiotry.kit.SimplePageBuilder;");
+		ps.println("import org.konghao.reposiotry.kit.SimplePageBuilder;");
 		ps.println("import "+groupId+".model."+entity.getClassName()+";");
 		ps.println("import "+groupId+".service"+".I"+entity.getClassName()+"Service"+";");
 		ps.println("import org.springframework.beans.factory.annotation.Autowired;");
