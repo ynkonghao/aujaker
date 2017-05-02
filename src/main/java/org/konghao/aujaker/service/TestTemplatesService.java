@@ -42,7 +42,7 @@ public class TestTemplatesService implements ITestTemplatesService {
 			sb.append("public class Test").append(entity.getClassName()).append(type)
 				.append(" {\n\n");
 			
-			String oname = CommonKit.generateVarName(entity)+CommonKit.lowcaseFirst(type);
+			String oname = CommonKit.generateVarName(entity)+type;
 			
 			sb.append("\t@Autowired\n");
 			sb.append("\tprivate I").append(entity.getClassName()).append(type)
