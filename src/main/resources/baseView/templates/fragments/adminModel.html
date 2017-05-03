@@ -68,6 +68,8 @@
         <span th:text="'('+${authTmp}+')'" th:remove="tag"></span>
     </div>
 </div>
+<div id="userAuthHref" style="display: none;" th:if="${session.LOGIN_USER eq null}">
+</div>
 <div th:each="arg : ${args}" class="search-filter-div">
     <input th:value="${arg.value}" type="hidden" th:attr="targetId=${arg.key}"/>
 </div>

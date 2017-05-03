@@ -136,12 +136,14 @@ public class ViewService implements IViewService {
             ps.println("\t\t\t<form method=\"POST\" th:object=\"${"+CommonKit.lowcaseFirst(entity.getClassName())+"}\" id=\"dataForm\">\n");
 
             for(PropertiesBaseEntity pbe : entity.getProps()) {
-                ps.println("\t\t\t\t<div class=\"form-group form-group-lg\">\n" +
-                        "\t\t\t\t\t<div class=\"input-group\">\n" +
-                        "\t\t\t\t\t\t<div class=\"input-group-addon\">"+pbe.getCommet()+"：</div>\n" +
-                        "\t\t\t\t\t\t<input name=\""+pbe.getName()+"\" type=\"text\" class=\"form-control\" th:value=\"${"+CommonKit.lowcaseFirst(entity.getClassName())+"."+pbe.getName()+"}\" placeholder=\"请输入"+pbe.getCommet()+"\" />\n" +
-                        "\t\t\t\t\t</div>\n" +
-                        "\t\t\t\t</div>\n");
+                if(!"id".equalsIgnoreCase(pbe.getName())) {
+                    ps.println("\t\t\t\t<div class=\"form-group form-group-lg\">\n" +
+                            "\t\t\t\t\t<div class=\"input-group\">\n" +
+                            "\t\t\t\t\t\t<div class=\"input-group-addon\">" + pbe.getCommet() + "：</div>\n" +
+                            "\t\t\t\t\t\t<input name=\"" + pbe.getName() + "\" type=\"text\" class=\"form-control\" th:value=\"${" + CommonKit.lowcaseFirst(entity.getClassName()) + "." + pbe.getName() + "}\" placeholder=\"请输入" + pbe.getCommet() + "\" />\n" +
+                            "\t\t\t\t\t</div>\n" +
+                            "\t\t\t\t</div>\n");
+                }
             }
 
             ps.println("\t\t\t\t<input type=\"hidden\" name=\"token\" value=\"${session.token}\"/>\n" +
@@ -186,7 +188,7 @@ public class ViewService implements IViewService {
             for(ClassEntity e : entities) {
                 ps.println("\t\t\t\t<li thisHref=\"/admin/appConfig/index\" class=\"menu-level-1\">\n" +
                         "\t\t\t\t\t<a href=\"/"+CommonKit.lowcaseFirst(e.getClassName())+"/list\">\n" +
-                        "\t\t\t\t\t\t<i class=\"fa fa-cog\"></i> "+e.getClassShowName()+" \n" +
+                        "\t\t\t\t\t\t<i class=\"fa fa-angle-right\"></i> "+e.getClassShowName()+"管理 \n" +
                         "\t\t\t\t\t</a>\n" +
                         "\t\t\t\t</li>");
             }

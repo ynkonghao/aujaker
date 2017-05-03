@@ -78,16 +78,12 @@ public class ControllerService implements IControllerService {
 	
 	private void generateFind(ClassEntity entity, PrintStream ps) {
 		ps.println("\t@RequestMapping(\"/list\")");
-		ps.println("\tpublic String find(Model model,HttpServletRequest request) {");
-		ps.println("\t\tInteger offset = 0;");
-		ps.println("\t\ttry{");
-		ps.println("\t\t\toffset = Integer.parseInt(request.getParameter(\"pager.offset\"));");
-		ps.println("\t\t} catch (NumberFormatException e) {}");
+		ps.println("\tpublic String find(Model model, Integer page,HttpServletRequest request) {");
 		ps.println("\t\tPage<"+entity.getClassName()+"> "+entity.getClassName().toLowerCase()+"s"
-				+" = "+entity.getClassName().toLowerCase()+"Service.find(SimplePageBuilder.generate(offset));");
-		ps.println("\t\tmodel.addAttribute(\""+entity.getClassName().toLowerCase()+"s\", "+
+				+" = "+entity.getClassName().toLowerCase()+"Service.find(SimplePageBuilder.generate(page));");
+		ps.println("\t\tmodel.addAttribute(\"datas\", "+
 				entity.getClassName().toLowerCase()+"s);");
-		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/show\";");
+		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/list\";");
 		ps.println("\t}");
 	}
 
