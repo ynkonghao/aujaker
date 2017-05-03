@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class Configservice implements IConfigService {
 	
 	private final static String BASE_URL = "baseSrc";
+	private final static String BASE_VIEW_URL = "baseView";
 
 	@Override
 	public void copyBaseSrc(String path,String artifactId) {
@@ -40,6 +41,29 @@ public class Configservice implements IConfigService {
 					FileUtils.copyDirectory(file, dest);
 				}
 				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void copyBaseView(String path,String artifactId) {
+		try {
+			File f = new File(
+					RepositoryService.class.getClassLoader().getResource(BASE_VIEW_URL).getFile());
+			File[] files = f.listFiles();
+			for(File file:files) {
+				String name = file.getName();
+				File dest = new File(path+"/"+artifactId+"/src/main/resources/"+name);
+				if(file.isFile()) {
+					if(!dest.exists()) dest.createNewFile();
+					FileUtils.copyFile(file, dest);
+				} else {
+					if(!dest.exists()) dest.mkdirs();
+					FileUtils.copyDirectory(file, dest);
+				}
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

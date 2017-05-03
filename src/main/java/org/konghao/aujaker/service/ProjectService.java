@@ -32,6 +32,9 @@ public class ProjectService implements IProjectService {
 	private IControllerService controllerService;
 	@Autowired
 	private ITestTemplatesService testTemplatesService;
+
+	@Autowired
+	private IViewService viewService;
 	
 	@Override
 	public void initProject(String path) {
@@ -41,10 +44,12 @@ public class ProjectService implements IProjectService {
 		configService.generateApplicationPropertiesByXml(path, "aujaker.xml");
 		configService.generatePomByXml(path, "aujaker.xml");
 		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
+		configService.copyBaseView(path,(String)maps.get(FinalValue.ARTIFACT_ID));
 		configService.generateApplicationConfig(path, (String)maps.get(FinalValue.GROUP_ID), (String)maps.get(FinalValue.ARTIFACT_ID));
 		repositoryService.generateRepository(maps, path);
 		businessService.generateService(maps, path);
 		controllerService.generateControllers(path, maps);
+		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
 		this.mvnPackage(path, (String)maps.get(FinalValue.GROUP_ID));
 	}
