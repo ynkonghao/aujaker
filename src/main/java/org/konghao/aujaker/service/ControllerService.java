@@ -91,6 +91,14 @@ public class ControllerService implements IControllerService {
 		buffer.append("\t\treturn "+"\""+CommonKit.generateVarName(entity)+"/show\";").append("\r\n");
 		buffer.append("\t}");
 		ps.println(buffer);
+		ps.println("\t@RequestMapping(\"/list\")");
+		ps.println("\tpublic String find(Model model, Integer page,HttpServletRequest request) {");
+		ps.println("\t\tPage<"+entity.getClassName()+"> "+entity.getClassName().toLowerCase()+"s"
+				+" = "+entity.getClassName().toLowerCase()+"Service.find(SimplePageBuilder.generate(page));");
+		ps.println("\t\tmodel.addAttribute(\"datas\", "+
+				entity.getClassName().toLowerCase()+"s);");
+		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/list\";");
+		ps.println("\t}");
 	}
 
 	//TODO 所有主键类型都需要根据entity来处理,CommonKit.getPkType(ce)可以获取主键类型，

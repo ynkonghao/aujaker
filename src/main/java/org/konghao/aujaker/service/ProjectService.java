@@ -1,10 +1,14 @@
 package org.konghao.aujaker.service;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.konghao.aujaker.kit.TarAndGzipUtil;
 import org.konghao.aujaker.model.FinalValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,9 @@ public class ProjectService implements IProjectService {
 	private IControllerService controllerService;
 	@Autowired
 	private ITestTemplatesService testTemplatesService;
+
+	@Autowired
+	private IViewService viewService;
 	
 	@Override
 	public void initProject(String path) {
@@ -37,10 +44,12 @@ public class ProjectService implements IProjectService {
 		configService.generateApplicationPropertiesByXml(path, "aujaker.xml");
 		configService.generatePomByXml(path, "aujaker.xml");
 		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
+		configService.copyBaseView(path,(String)maps.get(FinalValue.ARTIFACT_ID));
 		configService.generateApplicationConfig(path, (String)maps.get(FinalValue.GROUP_ID), (String)maps.get(FinalValue.ARTIFACT_ID));
 		repositoryService.generateRepository(maps, path);
 		businessService.generateService(maps, path);
 		controllerService.generateControllers(path, maps);
+		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
 		this.mvnPackage(path, (String)maps.get(FinalValue.GROUP_ID));
 	}
@@ -67,6 +76,45 @@ public class ProjectService implements IProjectService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}  
+	}
+
+	@Override
+	public void generateReleasePackage(String path, String artifactId) {
+		try {
+			String mpath = path+"/"+artifactId;
+			String ppath = mpath+"/"+artifactId;
+			String spath = mpath+"/"+artifactId+"/source";
+			File sfile = new File(spath);
+			if(!sfile.exists()) sfile.mkdirs();
+			File ofile = new File(mpath+"/target");
+			File pfile = new File(ppath);
+			File[] jarFile = ofile.listFiles(new FileFilter() {
+				@Override
+				public boolean accept(File f) {
+					if(f.getName().endsWith(".jar")) return true;
+					return false;
+				}
+			});
+			//拷贝jar文件
+			FileUtils.copyFileToDirectory(jarFile[0], pfile);
+			
+			//拷贝文件夹
+			FileUtils.copyDirectory(new File(mpath+"/src"), new File(spath+"/src"),new FileFilter() {
+				@Override
+				public boolean accept(File pathname) {
+					if(pathname.isDirectory()&&pathname.getName().equals("target")) return false;
+					return true;
+				}
+			});
+			
+			FileUtils.copyFileToDirectory(new File(mpath+"/pom.xml"), sfile);
+			//打成tar包
+			TarAndGzipUtil.getInstance().tarFile(ppath);
+			//删除临时文件
+			FileUtils.deleteDirectory(new File(ppath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

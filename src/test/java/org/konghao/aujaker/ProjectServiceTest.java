@@ -24,4 +24,8 @@ public class ProjectServiceTest {
 		projectService.mvnPackage("d:/test/mp","helloAujaker");
 	}
 	
+	@Test
+	public void testTar() {
+		projectService.generateReleasePackage("d:/test/mp", "helloAujaker");
+	}
 }

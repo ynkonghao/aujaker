@@ -24,8 +24,10 @@ spring.jpa.properties.hibernate.show_sql=true
 
 spring.thymeleaf.cache=false
 spring.thymeleaf.check-template-location=true
-spring.thymeleaf.prefix=classpath:templates/
+spring.thymeleaf.prefix=classpath:/templates/
 spring.thymeleaf.suffix=.html
 spring.thymeleaf.mode=HTML5
 spring.thymeleaf.encoding=UTF-8
 spring.thymeleaf.content-type=text/html
+
+server.port=80

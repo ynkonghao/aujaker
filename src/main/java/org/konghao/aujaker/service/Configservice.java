@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class Configservice implements IConfigService {
 	
 	private final static String BASE_URL = "baseSrc";
+	private final static String BASE_VIEW_URL = "baseView";
 
 	@Override
 	public void copyBaseSrc(String path,String artifactId) {
@@ -40,6 +41,29 @@ public class Configservice implements IConfigService {
 					FileUtils.copyDirectory(file, dest);
 				}
 				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void copyBaseView(String path,String artifactId) {
+		try {
+			File f = new File(
+					RepositoryService.class.getClassLoader().getResource(BASE_VIEW_URL).getFile());
+			File[] files = f.listFiles();
+			for(File file:files) {
+				String name = file.getName();
+				File dest = new File(path+"/"+artifactId+"/src/main/resources/"+name);
+				if(file.isFile()) {
+					if(!dest.exists()) dest.createNewFile();
+					FileUtils.copyFile(file, dest);
+				} else {
+					if(!dest.exists()) dest.mkdirs();
+					FileUtils.copyDirectory(file, dest);
+				}
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -281,6 +305,11 @@ public class Configservice implements IConfigService {
 		sb.append("import org.konghao.reposiotry.base.BaseRepositoryFactoryBean;\n");
 		sb.append("import org.springframework.boot.SpringApplication;\n");
 		sb.append("import org.springframework.data.jpa.repository.config.EnableJpaRepositories;\n");
+		sb.append("import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;\n" +
+				"import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;\n" +
+				"import org.springframework.boot.web.servlet.ErrorPage;\n" +
+				"import org.springframework.context.annotation.Bean;\n" +
+				"import org.springframework.http.HttpStatus;");
 		sb.append("import org.springframework.boot.autoconfigure.SpringBootApplication;\n\n");
 		sb.append("@EnableJpaRepositories(basePackages = {\"").append(groupId).append("\"},\n")
 			.append("\trepositoryFactoryBeanClass = BaseRepositoryFactoryBean.class//指定自己的工厂\n");
@@ -290,6 +319,19 @@ public class Configservice implements IConfigService {
 		sb.append("\tpublic static void main(String[] args) {\n");
 		sb.append("\t\tSpringApplication.run("+CommonKit.upcaseFirst(artifactId)+"Application.class,args);\n");
 		sb.append("\t}\n");
+
+		sb.append("\n\t@Bean\n" +
+				"    public EmbeddedServletContainerCustomizer containerCustomizer() {\n" +
+				"        return new EmbeddedServletContainerCustomizer(){\n" +
+				"            @Override\n" +
+				"            public void customize(ConfigurableEmbeddedServletContainer container) {\n" +
+				"                container.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST, \"/400\"));\n" +
+				"                container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, \"/500\"));\n" +
+				"                container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, \"/404\"));\n" +
+				"            }\n" +
+				"        };\n" +
+				"    }\n");
+
 		sb.append("}\n");
 		
 		FileWriter fw = null;

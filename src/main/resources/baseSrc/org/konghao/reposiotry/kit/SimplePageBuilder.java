@@ -18,16 +18,17 @@ public class SimplePageBuilder {
 	 * */
 	public static final int size = 15;
 	
-	public static Pageable generate(int page,int size,Sort sort) {
+	public static Pageable generate(Integer page,int size,Sort sort) {
+		page = page==null||page<0?0:page;
 		if(sort==null) return new PageRequest(page, size);
 		return new PageRequest(page, size, sort);
 	}
 	
-	public static Pageable generate(int page) {
+	public static Pageable generate(Integer page) {
 		return generate(page,size,null);
 	}
 	
-	public static Pageable generate(int page,Sort sort) {
+	public static Pageable generate(Integer page,Sort sort) {
 		return generate(page,size,sort);
 	}
 }
