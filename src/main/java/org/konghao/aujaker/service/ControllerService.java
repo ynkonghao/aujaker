@@ -18,6 +18,7 @@ public class ControllerService implements IControllerService {
 	public void generateControllers(String path, Map<String, Object> maps) {
 		String artifactId = (String)maps.get(FinalValue.ARTIFACT_ID);
 		String groupId = (String)maps.get(FinalValue.GROUP_ID);
+		@SuppressWarnings("unchecked")
 		List<ClassEntity> entitys = (List<ClassEntity>)maps.get(FinalValue.ENTITY);
 		for(ClassEntity ce:entitys) {
 			generateController(path,ce,artifactId,groupId);
@@ -79,26 +80,14 @@ public class ControllerService implements IControllerService {
 	private void generateFind(ClassEntity entity, PrintStream ps) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("\t@RequestMapping(\"/list\")").append("\r\n");
-		buffer.append("\tpublic String find(Model model,HttpServletRequest request) {").append("\r\n");
-		buffer.append("\t\tInteger offset = 0;").append("\r\n");
-		buffer.append("\t\ttry{").append("\r\n");
-		buffer.append("\t\t\toffset = Integer.parseInt(request.getParameter(\"pager.offset\"));").append("\r\n");
-		buffer.append("\t\t} catch (NumberFormatException e) {}").append("\r\n");
+		buffer.append("\tpublic String find(Model model,Integer page,HttpServletRequest request) {").append("\r\n");
 		buffer.append("\t\tPage<"+entity.getClassName()+"> "+CommonKit.generateVarName(entity)+"s"
-				+" = "+CommonKit.generateVarName(entity)+"Service.find(SimplePageBuilder.generate(offset));").append("\r\n");
-		buffer.append("\t\tmodel.addAttribute(\""+CommonKit.generateVarName(entity)+"s\", "+
+				+" = "+CommonKit.generateVarName(entity)+"Service.find(SimplePageBuilder.generate(page));").append("\r\n");
+		buffer.append("\t\tmodel.addAttribute(\"datas\","+
 				CommonKit.generateVarName(entity)+"s);").append("\r\n");
-		buffer.append("\t\treturn "+"\""+CommonKit.generateVarName(entity)+"/show\";").append("\r\n");
+		buffer.append("\t\treturn "+"\""+CommonKit.generateVarName(entity)+"/list\";").append("\r\n");
 		buffer.append("\t}");
 		ps.println(buffer);
-		ps.println("\t@RequestMapping(\"/list\")");
-		ps.println("\tpublic String find(Model model, Integer page,HttpServletRequest request) {");
-		ps.println("\t\tPage<"+entity.getClassName()+"> "+entity.getClassName().toLowerCase()+"s"
-				+" = "+entity.getClassName().toLowerCase()+"Service.find(SimplePageBuilder.generate(page));");
-		ps.println("\t\tmodel.addAttribute(\"datas\", "+
-				entity.getClassName().toLowerCase()+"s);");
-		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/list\";");
-		ps.println("\t}");
 	}
 
 	//TODO 所有主键类型都需要根据entity来处理,CommonKit.getPkType(ce)可以获取主键类型，
