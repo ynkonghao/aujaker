@@ -53,11 +53,11 @@ public class ControllerService implements IControllerService {
 	
 	private void generateClass(ClassEntity entity, PrintStream ps) {
 		ps.println("@Controller");
-		ps.println("@RequestMapping(\"/"+entity.getClassName().toLowerCase()+"\")");
+		ps.println("@RequestMapping(\"/"+CommonKit.generateVarName(entity)+"\")");
 		ps.println("public class "+entity.getClassName()+"Controller"+" {");
 		newLine(ps);
 		ps.println("\t@Autowired");
-		ps.println("\tprivate I"+entity.getClassName()+"Service "+entity.getClassName().toLowerCase()+"Service;");
+		ps.println("\tprivate I"+entity.getClassName()+"Service "+CommonKit.generateVarName(entity)+"Service;");
 		newLine(ps);
 		generateAddGet(entity,ps);
 		newLine(ps);
@@ -77,86 +77,99 @@ public class ControllerService implements IControllerService {
 	
 	
 	private void generateFind(ClassEntity entity, PrintStream ps) {
-		ps.println("\t@RequestMapping(\"/list\")");
-		ps.println("\tpublic String find(Model model,HttpServletRequest request) {");
-		ps.println("\t\tInteger offset = 0;");
-		ps.println("\t\ttry{");
-		ps.println("\t\t\toffset = Integer.parseInt(request.getParameter(\"pager.offset\"));");
-		ps.println("\t\t} catch (NumberFormatException e) {}");
-		ps.println("\t\tPage<"+entity.getClassName()+"> "+entity.getClassName().toLowerCase()+"s"
-				+" = "+entity.getClassName().toLowerCase()+"Service.find(SimplePageBuilder.generate(offset));");
-		ps.println("\t\tmodel.addAttribute(\""+entity.getClassName().toLowerCase()+"s\", "+
-				entity.getClassName().toLowerCase()+"s);");
-		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/show\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(\"/list\")").append("\r\n");
+		buffer.append("\tpublic String find(Model model,HttpServletRequest request) {").append("\r\n");
+		buffer.append("\t\tInteger offset = 0;").append("\r\n");
+		buffer.append("\t\ttry{").append("\r\n");
+		buffer.append("\t\t\toffset = Integer.parseInt(request.getParameter(\"pager.offset\"));").append("\r\n");
+		buffer.append("\t\t} catch (NumberFormatException e) {}").append("\r\n");
+		buffer.append("\t\tPage<"+entity.getClassName()+"> "+CommonKit.generateVarName(entity)+"s"
+				+" = "+CommonKit.generateVarName(entity)+"Service.find(SimplePageBuilder.generate(offset));").append("\r\n");
+		buffer.append("\t\tmodel.addAttribute(\""+CommonKit.generateVarName(entity)+"s\", "+
+				CommonKit.generateVarName(entity)+"s);").append("\r\n");
+		buffer.append("\t\treturn "+"\""+CommonKit.generateVarName(entity)+"/show\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	//TODO 所有主键类型都需要根据entity来处理,CommonKit.getPkType(ce)可以获取主键类型，
 	//TODO 获取变量的名称不能直接使用toLowerCase,如果数据类型是StudentLesson名称就不对了!
 	private void generateUpdatePost(ClassEntity entity, PrintStream ps) {
-		
-		ps.println("\t@RequestMapping(value=\"/update/{id}\",method=RequestMethod.POST)");
-		ps.println("\tpublic String update(@PathVariable int id,"+entity.getClassName()+" "+CommonKit.lowcaseFirst(entity.getClassName())+") {");
-		ps.println("\t\ttry {");
-		ps.println("\t\t\t"+entity.getClassName()+" t"+entity.getClassName().toLowerCase()
-				+" = "+entity.getClassName().toLowerCase()+"Service.load(id);");
-		ps.println("\t\t\tBeanUtils.copyProperties(t"+entity.getClassName().toLowerCase()+", "+
-				entity.getClassName().toLowerCase()+");");
-		ps.println("\t\t\t"+entity.getClassName().toLowerCase()+"Service.update(t"+entity.getClassName().toLowerCase()+");");
-		ps.println("\t\t} catch (IllegalAccessException e) {");
-		ps.println("\t\t\te.printStackTrace();");
-		ps.println("\t\t} catch (InvocationTargetException e) {");
-		ps.println("\t\t\te.printStackTrace();");
-		ps.println("\t\t\t}");
-		ps.println("\t\treturn "+"\"redirect:/"+entity.getClassName().toLowerCase()+"/list\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(value=\"/update/{id}\",method=RequestMethod.POST)").append("\r\n");
+		buffer.append("\tpublic String update(@PathVariable "+CommonKit.getPkType(entity)+" id,"+entity.getClassName()+" "+CommonKit.lowcaseFirst(entity.getClassName())+") {").append("\r\n");
+		buffer.append("\t\ttry {").append("\r\n");
+		buffer.append("\t\t\t"+entity.getClassName()+" t"+CommonKit.generateVarName(entity)
+		+" = "+CommonKit.generateVarName(entity)+"Service.load(id);").append("\r\n");
+		buffer.append("\t\t\tBeanUtils.copyProperties(t"+CommonKit.generateVarName(entity)+", "+
+				CommonKit.generateVarName(entity)+");").append("\r\n");
+		buffer.append("\t\t\t"+CommonKit.generateVarName(entity)+"Service.update(t"+CommonKit.generateVarName(entity)+");").append("\r\n");
+		buffer.append("\t\t} catch (IllegalAccessException e) {").append("\r\n");
+		buffer.append("\t\t\te.printStackTrace();").append("\r\n");
+		buffer.append("\t\t} catch (InvocationTargetException e) {").append("\r\n");
+		buffer.append("\t\t\te.printStackTrace();").append("\r\n");
+		buffer.append("\t\t}").append("\r\n");
+		buffer.append("\t\treturn "+"\"redirect:/"+CommonKit.generateVarName(entity)+"/list\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	private void generateUpdateGet(ClassEntity entity, PrintStream ps) {
-		ps.println("\t@RequestMapping(value=\"/update/{id}\",method=RequestMethod.GET)");
-		ps.println("\tpublic String update(@PathVariable int id,Model model) {");
-		ps.println("\t\t"+entity.getClassName()+" "+entity.getClassName().toLowerCase()+" "+
-		"= "+entity.getClassName().toLowerCase()+"Service.load(id);");
-		ps.println("\t\tmodel.addAttribute(\""+entity.getClassName().toLowerCase()+"\","+entity.getClassName().toLowerCase()+");");
-		ps.println("\t\treturn \""+entity.getClassName().toLowerCase()+"/update\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(value=\"/update/{id}\",method=RequestMethod.GET)").append("\r\n");
+		buffer.append("\tpublic String update(@PathVariable "+CommonKit.getPkType(entity)+" id,Model model) {").append("\r\n");
+		buffer.append("\t\t"+entity.getClassName()+" "+CommonKit.generateVarName(entity)+" "+
+		"= "+CommonKit.generateVarName(entity)+"Service.load(id);").append("\r\n");
+		buffer.append("\t\tmodel.addAttribute(\""+CommonKit.generateVarName(entity)+"\","+CommonKit.generateVarName(entity)+");").append("\r\n");
+		buffer.append("\t\treturn \""+CommonKit.generateVarName(entity)+"/update\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	private void generateDelete(ClassEntity entity, PrintStream ps) {
-		ps.println("\t@RequestMapping(\"/delete/{id}\")");
-		ps.println("\tpublic String delete(@PathVariable int id) {");
-		ps.println("\t\t"+entity.getClassName().toLowerCase()+"Service.delete(id);");
-		ps.println("\t\treturn \"redirect:/"+entity.getClassName().toLowerCase()+"/list\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(\"/delete/{id}\")").append("\r\n");
+		buffer.append("\tpublic String delete(@PathVariable "+CommonKit.getPkType(entity)+" id) {").append("\r\n");
+		buffer.append("\t\t"+CommonKit.generateVarName(entity)+"Service.delete(id);").append("\r\n");
+		buffer.append("\t\treturn \"redirect:/"+CommonKit.generateVarName(entity)+"/list\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	private void generateShow(ClassEntity entity, PrintStream ps) {
-		ps.println("\t@RequestMapping(\"/{id}\")");
-		ps.println("\tpublic String show(@PathVariable int id,Model model) {");
-		ps.println("\t\t"+entity.getClassName()+" "+entity.getClassName().toLowerCase()+
-				" "+"= "+entity.getClassName().toLowerCase()+"Service.load(id);");
-		ps.println("\t\tmodel.addAttribute("+"\""+entity.getClassName().toLowerCase()+"\","+" "+
-				entity.getClassName().toLowerCase()+")"+";");
-		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/show"+"\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(\"/{id}\")").append("\r\n");
+		buffer.append("\tpublic String show(@PathVariable "+CommonKit.getPkType(entity)+" id,Model model) {").append("\r\n");
+		buffer.append("\t\t"+entity.getClassName()+" "+CommonKit.generateVarName(entity)+
+				" "+"= "+CommonKit.generateVarName(entity)+"Service.load(id);").append("\r\n");
+		buffer.append("\t\tmodel.addAttribute("+"\""+CommonKit.generateVarName(entity)+"\","+" "+
+				CommonKit.generateVarName(entity)+")"+";").append("\r\n");
+		buffer.append("\t\treturn "+"\""+CommonKit.generateVarName(entity)+"/show"+"\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	private void nenetateAddPost(ClassEntity entity, PrintStream ps) {
-		ps.println("\t@RequestMapping(value=\"/add\",method=RequestMethod.POST)");
-		ps.println("\tpublic String add("+entity.getClassName()+" "+entity.getClassName().toLowerCase()+",Model model) {");
-		ps.println("\t\t"+entity.getClassName().toLowerCase()+"Service.add("+entity.getClassName().toLowerCase()+");");
-		ps.println("\t\treturn \""+"redirect:/"+entity.getClassName().toLowerCase()+"/list\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(value=\"/add\",method=RequestMethod.POST)").append("\r\n");
+		buffer.append("\tpublic String add("+entity.getClassName()+" "+CommonKit.generateVarName(entity)+",Model model) {").append("\r\n");
+		buffer.append("\t\t"+CommonKit.generateVarName(entity)+"Service.add("+CommonKit.generateVarName(entity)+");").append("\r\n");
+		buffer.append("\t\treturn \""+"redirect:/"+CommonKit.generateVarName(entity)+"/list\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	private void generateAddGet(ClassEntity entity, PrintStream ps) {
-		ps.println("\t@RequestMapping(value=\"/add\",method=RequestMethod.GET)");
-		ps.println("\tpublic String add(Model model) {");
-		ps.println("\t\t"+entity.getClassName()+" "+entity.getClassName().toLowerCase()+" "+"="+" "
-		+"new"+" "+entity.getClassName()+"();");
-		ps.println("\t\tmodel.addAttribute("+"\""+entity.getClassName().toLowerCase()+"\""+","+entity.getClassName().toLowerCase()+");");
-		ps.println("\t\treturn "+"\""+entity.getClassName().toLowerCase()+"/add"+"\";");
-		ps.println("\t}");
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\t@RequestMapping(value=\"/add\",method=RequestMethod.GET)"+System.getProperty("line.separator"));
+		buffer.append("\tpublic String add(Model model) {\r\n");
+		buffer.append("\t\t"+entity.getClassName()+" "+CommonKit.generateVarName(entity)+" "+"="+" "
+		+"new"+" "+entity.getClassName()+"();").append("\r\n");
+		buffer.append("\t\tmodel.addAttribute("+"\""+CommonKit.generateVarName(entity)+"\""+","+CommonKit.generateVarName(entity)+");").append("\r\n");
+		buffer.append("\t\treturn "+"\""+CommonKit.generateVarName(entity)+"/add"+"\";").append("\r\n");
+		buffer.append("\t}");
+		ps.println(buffer);
 	}
 
 	private void newLine(PrintStream ps) {
@@ -165,21 +178,21 @@ public class ControllerService implements IControllerService {
 
 
 	private void generateImport(ClassEntity entity,PrintStream ps,String artifactId,String groupId) {
-		ps.println("import java.lang.reflect.InvocationTargetException;");
-		ps.println("import javax.servlet.http.HttpServletRequest;");
-		ps.println("import org.apache.commons.beanutils.BeanUtils;");
-		ps.println("import org.konghao.reposiotry.kit.SimplePageBuilder;");
-		ps.println("import "+groupId+".model."+entity.getClassName()+";");
-		ps.println("import "+groupId+".service"+".I"+entity.getClassName()+"Service"+";");
-		ps.println("import org.springframework.beans.factory.annotation.Autowired;");
-		ps.println("import org.springframework.data.domain.Page;");
-		ps.println("import org.springframework.stereotype.Controller;");
-		ps.println("import org.springframework.ui.Model;");
-		ps.println("import org.springframework.web.bind.annotation.PathVariable;");
-		ps.println("import org.springframework.web.bind.annotation.RequestMapping;");
-		ps.println("import org.springframework.web.bind.annotation.RequestMethod;");
-		
-	
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("import java.lang.reflect.InvocationTargetException;").append("\r\n");
+		buffer.append("import javax.servlet.http.HttpServletRequest;").append("\r\n");
+		buffer.append("import org.apache.commons.beanutils.BeanUtils;").append("\r\n");
+		buffer.append("import org.konghao.reposiotry.kit.SimplePageBuilder;").append("\r\n");
+		buffer.append("import "+groupId+".model."+entity.getClassName()+";").append("\r\n");
+		buffer.append("import "+groupId+".service"+".I"+entity.getClassName()+"Service"+";").append("\r\n");
+		buffer.append("import org.springframework.beans.factory.annotation.Autowired;").append("\r\n");
+		buffer.append("import org.springframework.data.domain.Page;").append("\r\n");
+		buffer.append("import org.springframework.stereotype.Controller;").append("\r\n");
+		buffer.append("import org.springframework.ui.Model;").append("\r\n");
+		buffer.append("import org.springframework.web.bind.annotation.PathVariable;").append("\r\n");
+		buffer.append("import org.springframework.web.bind.annotation.RequestMapping;").append("\r\n");
+		buffer.append("import org.springframework.web.bind.annotation.RequestMethod;").append("\r\n");
+		ps.println(buffer);
 	}
 
 }
