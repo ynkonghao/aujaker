@@ -138,7 +138,7 @@ public class ModelService implements IModelService {
 			if(!CommonKit.isEmpty(pbe.getCommet())) {
 				gssb.append("\t").append("/**\n")
 				.append("\t * 设置").append(pbe.getCommet()).append("\n")
-				.append("\t * @param ").append(pbe.getCommet()).append("\n")
+				.append("\t * @param ").append(pbe.getName()).append(" ").append(pbe.getCommet()).append("\n")
 				.append("\t */\n");
 			}
 			String setterP = generatorSet(pbe.getName());
