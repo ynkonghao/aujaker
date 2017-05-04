@@ -43,6 +43,7 @@ public class ProjectService implements IProjectService {
 		modelService.generateModels(path, maps);
 		configService.generateApplicationPropertiesByXml(path, "aujaker.xml");
 		configService.generatePomByXml(path, "aujaker.xml");
+
 		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
 		configService.copyBaseView(path,(String)maps.get(FinalValue.ARTIFACT_ID));
 		configService.generateApplicationConfig(path, (String)maps.get(FinalValue.GROUP_ID), (String)maps.get(FinalValue.ARTIFACT_ID));
@@ -51,7 +52,31 @@ public class ProjectService implements IProjectService {
 		controllerService.generateControllers(path, maps);
 		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
-		this.mvnPackage(path, (String)maps.get(FinalValue.GROUP_ID));
+		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+	}
+
+	@Override
+	public String initProject(String path, String xmlFile) {
+		Map<String,Object> maps = classEntityService.generateModelsByUploadXml(xmlFile);
+		checkFileService.checkXmlFileByUpload(new File(xmlFile));
+		modelService.generateModels(path, maps);
+
+		configService.generateApplicationPropertiesByUploadXml(path, xmlFile);
+		configService.generatePomByUploadXml(path, xmlFile);
+
+		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
+		configService.copyBaseView(path,(String)maps.get(FinalValue.ARTIFACT_ID));
+		configService.generateApplicationConfig(path, (String)maps.get(FinalValue.GROUP_ID), (String)maps.get(FinalValue.ARTIFACT_ID));
+		repositoryService.generateRepository(maps, path);
+		businessService.generateService(maps, path);
+		controllerService.generateControllers(path, maps);
+		viewService.generateViews(path, maps);
+		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
+		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+
+		this.generateReleasePackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+
+		return (String)maps.get(FinalValue.ARTIFACT_ID);
 	}
 
 	@Override
@@ -59,6 +84,7 @@ public class ProjectService implements IProjectService {
 		try {
 			String mpath = path+"/"+artifactId;
 			Runtime runtime = Runtime.getRuntime();
+
 			String exec = null;
 			if(path.charAt(1)==':') {
 				//说明是win的系统
@@ -83,7 +109,7 @@ public class ProjectService implements IProjectService {
 		try {
 			String mpath = path+"/"+artifactId;
 			String ppath = mpath+"/"+artifactId;
-			String spath = mpath+"/"+artifactId+"/source";
+			String spath = mpath+"/"+artifactId+"/"+artifactId;
 			File sfile = new File(spath);
 			if(!sfile.exists()) sfile.mkdirs();
 			File ofile = new File(mpath+"/target");

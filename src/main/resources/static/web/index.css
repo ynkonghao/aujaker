@@ -1,0 +1,24 @@
+div.img {
+    width:100%; text-align:center; padding:30px 0px;
+}
+div.img span {
+    font-size:80px; color:#f8f8f8; background:#308080; border-radius:120px; padding:20px 20px;
+}
+
+#generate-item {
+    cursor:pointer;
+}
+.upload-part {
+    width:70%; margin-left:15%; float:left;
+}
+.show-word {
+    color:#683047;
+}
+
+.show-remind {
+    padding-top:15px; color:#747474;
+}
+
+a.download-href {
+    margin-top:15px; display:none;
+}

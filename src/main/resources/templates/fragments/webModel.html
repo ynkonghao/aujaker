@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="mymodel">
+
+    <head th:fragment="head">
+        <title>后台首页</title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+        <!-- 默认360 兼容模式 -->
+        <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <script type="text/javascript" src="/basic/js-lib/jquery-1.12.3.min.js"></script>
+        <script type="text/javascript" src="/basic/bootstrap3/js/bootstrap.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/basic/bootstrap3/css/bootstrap.min.css"/>
+
+        <script type="text/javascript" src="/basic/admin/myself/public.js"></script>
+
+        <!-- Font Awesome-->
+        <link rel="stylesheet" href="/basic/font-awesome-4.7.0/css/font-awesome.min.css" />
+
+        <link rel="stylesheet" type="text/css" href="/web/main.css"/>
+    </head>
+    <body>
+        <div class="model-head">
+            <div class="line"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 left-nav">
+                        <ul class="top-nav-ul">
+                            <li><a href="">使用说明</a></li>
+                            <li><a href="">视频教程</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2"><img src="/web/logo.jpg" style="width:100%;margin-top:5px;text-align:center;"/></div>
+                    <div class="col-md-5 right-nav">
+                        <ul class="top-nav-ul">
+                            <li><a target="_blank" href="/templates/aujaker.xml">模板下载</a></li>
+                            <li><a href="">版本信息</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="padding:0px; background:#f8f8f8">
+            <div th:include="this :: content" ></div>
+        </div>
+
+        <nav class="navbar navbar-fixed-bottom web-model-bottom">
+            <p>开发人员：孔浩、钟述林、周勤生</p>
+        </nav>
+    </body>
+</html>

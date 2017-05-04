@@ -1,5 +1,6 @@
 package org.konghao.aujaker.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -21,6 +22,18 @@ public class CheckFileService implements ICheckFileService {
 		try {
 			SAXReader reader = new SAXReader();
 			Document d = reader.read(CheckFileService.class.getClassLoader().getResource(path));
+			Element roots = d.getRootElement();
+			getNodes(roots);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void checkXmlFileByUpload(File file) {
+		try {
+			SAXReader reader = new SAXReader();
+			Document d = reader.read(file);
 			Element roots = d.getRootElement();
 			getNodes(roots);
 		} catch (DocumentException e) {

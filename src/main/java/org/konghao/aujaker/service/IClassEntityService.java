@@ -22,10 +22,11 @@ public interface IClassEntityService {
 	public Map<String,Object> generateModelsByProperties();
 	/**
 	 * 根据xml生成实体类
-	 * @param path 生成的位置
 	 * @param file xml的文件路径
 	 */
 	public Map<String,Object> generateModelsByXml(String file);
+
+	Map<String, Object> generateModelsByUploadXml(String uploadFile);
 	
 	public Map<String,Object> generateModelsByXml();
 	/**

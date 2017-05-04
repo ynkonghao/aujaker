@@ -30,6 +30,9 @@ public interface IConfigService {
 	 * @param xmlFile
 	 */
 	public void generateApplicationPropertiesByXml(String path,String xmlFile);
+
+	void generateApplicationPropertiesByUploadXml(String path, String uploadFile);
+
 	/**
 	 * 根据properties写pom，文件写在src文件夹中
 	 * @param path
@@ -42,6 +45,8 @@ public interface IConfigService {
 	 * @param xmlFile
 	 */
 	public void generatePomByXml(String path,String xmlFile);
+
+	void generatePomByUploadXml(String path, String uploadFile);
 	
 	/**
 	 * 将baseSrc中的路径拷贝到路径中

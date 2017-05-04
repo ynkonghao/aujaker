@@ -127,9 +127,9 @@ public class ControllerService implements IControllerService {
 	private void generateDelete(ClassEntity entity, PrintStream ps) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("\t@RequestMapping(\"/delete/{id}\")").append("\r\n");
-		buffer.append("\tpublic String delete(@PathVariable "+CommonKit.getPkType(entity)+" id) {").append("\r\n");
+		buffer.append("\tpublic @ResponseBody String delete(@PathVariable "+CommonKit.getPkType(entity)+" id) {").append("\r\n");
 		buffer.append("\t\t"+CommonKit.generateVarName(entity)+"Service.delete(id);").append("\r\n");
-		buffer.append("\t\treturn \"redirect:/"+CommonKit.generateVarName(entity)+"/list\";").append("\r\n");
+		buffer.append("\t\treturn \"1\";").append("\r\n");
 		buffer.append("\t}");
 		ps.println(buffer);
 	}
@@ -189,6 +189,7 @@ public class ControllerService implements IControllerService {
 		buffer.append("import org.springframework.web.bind.annotation.PathVariable;").append("\r\n");
 		buffer.append("import org.springframework.web.bind.annotation.RequestMapping;").append("\r\n");
 		buffer.append("import org.springframework.web.bind.annotation.RequestMethod;").append("\r\n");
+		buffer.append("import org.springframework.web.bind.annotation.ResponseBody;").append("\r\n");
 		ps.println(buffer);
 	}
 

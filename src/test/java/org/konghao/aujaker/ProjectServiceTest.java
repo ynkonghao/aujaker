@@ -28,4 +28,9 @@ public class ProjectServiceTest {
 	public void testTar() {
 		projectService.generateReleasePackage("d:/test/mp", "helloAujaker");
 	}
+
+	@Test
+	public void testInit2() {
+		projectService.initProject("D:\\temp\\upload\\aujacker\\item", "D:\\temp\\upload\\aujacker\\9287c89c-801a-4dfb-9884-e7bea6574666.xml");
+	}
 }

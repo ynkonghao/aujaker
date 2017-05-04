@@ -6,6 +6,9 @@ package org.konghao.aujaker.service;
  *
  */
 public interface IProjectService {
+
+	String initProject(String path, String xmlFile);
+
 	public void initProject(String path);
 	/**
 	 * 通过maven对项目进行打包package

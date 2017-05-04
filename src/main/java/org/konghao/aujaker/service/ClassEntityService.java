@@ -1,5 +1,6 @@
 package org.konghao.aujaker.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClassEntityService implements IClassEntityService {
 
-	
 	@Override
 	public Map<String,Object> generateModelsByProperties(String file) {
 		try {
@@ -119,13 +119,22 @@ public class ClassEntityService implements IClassEntityService {
 		return ce;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> generateModelsByUploadXml(String uploadFile) {
+		return generateModelsByXml(new File(uploadFile));
+	}
+
 	@Override
 	public Map<String,Object> generateModelsByXml(String file) {
+		return generateModelsByXml(new File(ModelService.class.getClassLoader().getResource(file).getFile()));
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String,Object> generateModelsByXml(File file) {
 		SAXReader reader = new SAXReader();
 		try {
 			Map<String,Object> maps = new HashMap<String,Object>();
-			Document d = reader.read(ModelService.class.getClassLoader().getResource(file));
+			Document d = reader.read(file);
 			Element root = d.getRootElement();
 			Element ele = root.element("model");
 			Element maven = root.element("maven");

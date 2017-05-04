@@ -166,11 +166,17 @@ public class Configservice implements IConfigService {
 		generateApplicationPropertiesByMap(path,configs);
 	}
 
-	private Map<String,String> readConfigByXml(String xmlFile) {
+	@Override
+	public void generateApplicationPropertiesByUploadXml(String path, String uploadFile) {
+		Map<String,String> configs = readConfigByXml(new File(uploadFile));
+		generateApplicationPropertiesByMap(path,configs);
+	}
+
+	private Map<String,String> readConfigByXml(File xmlFile) {
 		SAXReader reader = new SAXReader();
 		Map<String, String> configs = new HashMap<String,String>();
 		try {
-			Document d = reader.read(Configservice.class.getClassLoader().getResource(xmlFile));
+			Document d = reader.read(xmlFile);
 			Element root = d.getRootElement();
 			Element db = root.element("database");
 			Element maven = root.element("maven");
@@ -198,6 +204,10 @@ public class Configservice implements IConfigService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private Map<String,String> readConfigByXml(String xmlFile) {
+		return readConfigByXml(new File(Configservice.class.getClassLoader().getResource(xmlFile).getFile()));
 	}
 	@Override
 	public void generatePomByProp(String path, String propFile) {
@@ -269,11 +279,17 @@ public class Configservice implements IConfigService {
 		generateApplicationPomByMap(path, configs);
 	}
 
-	private Map<String, String> readPomByXml(String xmlFile) {
+	@Override
+	public void generatePomByUploadXml(String path, String uploadFile) {
+		Map<String,String> configs = readPomByXml(new File(uploadFile));
+		generateApplicationPomByMap(path, configs);
+	}
+
+	private Map<String, String> readPomByXml(File xmlFile) {
 		SAXReader reader = new SAXReader();
 		Map<String, String> configs = new HashMap<String,String>();
 		try {
-			Document d = reader.read(Configservice.class.getClassLoader().getResource(xmlFile));
+			Document d = reader.read(xmlFile);
 			Element root = d.getRootElement();
 			Element db = root.element("database");
 			Element maven = root.element("maven");
@@ -294,6 +310,10 @@ public class Configservice implements IConfigService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private Map<String, String> readPomByXml(String xmlFile) {
+		return readPomByXml(new File(Configservice.class.getClassLoader().getResource(xmlFile).getFile()));
 	}
 
 	@Override
