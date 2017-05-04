@@ -21,15 +21,92 @@ public class ViewService implements IViewService {
     @Override
     public void generateViews(String path, Map<String, Object> maps) {
         String artifactId = (String)maps.get(FinalValue.ARTIFACT_ID);
+        String groupId = (String)maps.get(FinalValue.GROUP_ID);
         List<ClassEntity> entitys = (List<ClassEntity>)maps.get(FinalValue.ENTITY);
 
         generateMenu(path, artifactId, entitys);
+        generateIndexController(path, entitys.get(0), artifactId, groupId);
 
         for(ClassEntity ce:entitys) {
             generateView(path,ce,artifactId);
             generateModify(path, artifactId, "add", ce);
             generateModify(path, artifactId, "update", ce);
             generateList(path, artifactId, ce);
+        }
+
+        generateIndexPage(path, entitys, artifactId);
+    }
+
+    private void generateIndexPage(String path, List<ClassEntity> entities, String artifactId) {
+        PrintStream ps = null;
+        try {
+            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, "")+"/index.html"));
+            ps.println("<!DOCTYPE html>\n" +
+                    "<html lang=\"zh-CN\"\n" +
+                    "      xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+                    "    <head>\n" +
+                    "        <title>系统首页</title>\n" +
+                    "\n" +
+                    "        <meta charset=\"utf-8\"/>\n" +
+                    "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>\n" +
+                    "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\n" +
+                    "\n" +
+                    "        <script type=\"text/javascript\" src=\"/basic/js-lib/jquery-1.12.3.min.js\"></script>\n" +
+                    "        <script type=\"text/javascript\" src=\"/basic/bootstrap3/js/bootstrap.min.js\"></script>\n" +
+                    "        <link type=\"text/css\" rel=\"stylesheet\" href=\"/basic/bootstrap3/css/bootstrap.min.css\"/>\n" +
+                    "\n" +
+                    "        <!-- Font Awesome-->\n" +
+                    "        <link rel=\"stylesheet\" href=\"/basic/font-awesome-4.7.0/css/font-awesome.min.css\" />\n" +
+                    "        <script type=\"text/javascript\" src=\"/basic/validate/bootstrapValidator.js\"></script>\n" +
+                    "        <style>\n" +
+                    "            body, html {\n" +
+                    "                background:#f9f9f9;\n" +
+                    "            }\n" +
+                    "        </style>\n" +
+                    "    </head>\n" +
+                    "    <body>\n\t\t<div class=\"container\" style=\"background: #FFF\">\n");
+            ps.println("\t\t<div class=\"page-header\">\n" +
+                    "            <h1>默认首页 <small>自动生成</small></h1>\n" +
+                    "        </div>\n");
+
+            ps.println("\t\t<div class=\"panel panel-info\">\n" +
+                    "            <div class=\"panel-heading\">主要功能展示</div>\n" +
+                    "            <div class=\"panel-body\">\n");
+
+            for(ClassEntity entity : entities) {
+                ps.println("\t\t\t\t<a href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/list\" class=\"btn btn-lg btn-primary\"><i class=\"fa fa-angle-right\"></i> "+entity.getClassShowName()+"管理</a>");
+            }
+
+            ps.println("\t\t\t</div>\n\t\t</div>\n");
+            ps.println("\t\t</div>\n\t</body>\n</html>");
+        } catch (Exception e) {
+        } finally {
+            if(ps!=null) {ps.close();}
+        }
+    }
+
+    private void generateIndexController(String path, ClassEntity entity, String artifactId, String groupId) {
+        path = CommonKit.generatePath(path, artifactId, entity, "controller");
+        PrintStream ps = null;
+        try {
+            ps = new PrintStream(new FileOutputStream(path+"/IndexController"+".java"));
+            //输出包名
+            ps.println("package "+groupId+".controller;\n\n");
+            ps.println("import org.springframework.stereotype.Controller;\n" +
+                    "import org.springframework.web.bind.annotation.GetMapping;\n" +
+                    "\n" +
+                    "@Controller\n" +
+                    "public class IndexController {\n" +
+                    "\n" +
+                    "    @GetMapping({\"\", \"/\", \"/index\"})\n" +
+                    "    public String index() {\n" +
+                    "        return \"index\";\n" +
+                    "    }\n" +
+                    "}\n");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if(ps!=null) ps.close();
         }
     }
 
@@ -87,11 +164,11 @@ public class ViewService implements IViewService {
 
             ps.println("\t\t\t\t\t<td>\n" +
                     "\t\t\t\t\t\t<div class=\"action-buttons\">\n" +
-                    "\t\t\t\t\t\t\t<a class=\"green auth\" sn=\""+entity.getClassName()+"Controller.update\" title=\"修改\" th:href=\"'/"+CommonKit.lowcaseFirst(entity.getClassName())+"/update/'+${obj.id}\">\n" +
+                    "\t\t\t\t\t\t\t<a class=\"green auth1\" sn=\""+entity.getClassName()+"Controller.update\" title=\"修改\" th:href=\"'/"+CommonKit.lowcaseFirst(entity.getClassName())+"/update/'+${obj.id}\">\n" +
                     "\t\t\t\t\t\t\t\t<i class=\"fa fa-pencil\"></i>\n" +
                     "\t\t\t\t\t\t\t</a>\n" +
                     "\n" +
-                    "\t\t\t\t\t\t\t<a class=\"delete-obj-href red auth\" sn=\""+entity.getClassName()+"Controller.delete\" th:title=\"'此操作不可逆，确定删除吗？'\" th:href=\"'/"+CommonKit.lowcaseFirst(entity.getClassName())+"/delete/'+${obj.id}\">\n" +
+                    "\t\t\t\t\t\t\t<a class=\"delete-obj-href red auth1\" sn=\""+entity.getClassName()+"Controller.delete\" th:title=\"'此操作不可逆，确定删除吗？'\" th:href=\"'/"+CommonKit.lowcaseFirst(entity.getClassName())+"/delete/'+${obj.id}\">\n" +
                     "\t\t\t\t\t\t\t\t<i class=\"fa fa-remove\"></i>\n" +
                     "\t\t\t\t\t\t\t</a>\n" +
                     "\t\t\t\t\t\t</div>\n" +
@@ -136,7 +213,7 @@ public class ViewService implements IViewService {
             ps.println("\t\t\t<form method=\"POST\" th:object=\"${"+CommonKit.lowcaseFirst(entity.getClassName())+"}\" id=\"dataForm\">\n");
 
             for(PropertiesBaseEntity pbe : entity.getProps()) {
-                if(!"id".equalsIgnoreCase(pbe.getName())) {
+                if(!"id".equalsIgnoreCase(pbe.getName()) && !"java.util.Date".equalsIgnoreCase(pbe.getType())) {
                     ps.println("\t\t\t\t<div class=\"form-group form-group-lg\">\n" +
                             "\t\t\t\t\t<div class=\"input-group\">\n" +
                             "\t\t\t\t\t\t<div class=\"input-group-addon\">" + pbe.getCommet() + "：</div>\n" +
@@ -186,7 +263,7 @@ public class ViewService implements IViewService {
                     "\t\t<ul class=\"submenu\">\n" );
 
             for(ClassEntity e : entities) {
-                ps.println("\t\t\t\t<li thisHref=\"/admin/appConfig/index\" class=\"menu-level-1\">\n" +
+                ps.println("\t\t\t\t<li class=\"menu-level-1\">\n" +
                         "\t\t\t\t\t<a href=\"/"+CommonKit.lowcaseFirst(e.getClassName())+"/list\">\n" +
                         "\t\t\t\t\t\t<i class=\"fa fa-angle-right\"></i> "+e.getClassShowName()+"管理 \n" +
                         "\t\t\t\t\t</a>\n" +
@@ -219,8 +296,8 @@ public class ViewService implements IViewService {
             ps.println("<div th:fragment=\"content\">");
             ps.println("<div class=\"ace-settings-container\" id=\"ace-settings-container\">");
             ps.println("<ul class=\"pagination\">");
-            ps.println("<li><a class=\"auth\" sn=\""+entity.getClassName()+"Controller.list\" href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/list\"><span class=\"fa fa-list\"></span> "+entity.getClassShowName()+"列表</a></li>");
-            ps.println("<li><a class=\"auth\" sn=\""+entity.getClassName()+"Controller.add\" href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/add\"><span class=\"fa fa-plus\"></span> 添加"+entity.getClassShowName()+"</a></li>");
+            ps.println("<li><a class=\"auth1\" sn=\""+entity.getClassName()+"Controller.list\" href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/list\"><span class=\"fa fa-list\"></span> "+entity.getClassShowName()+"列表</a></li>");
+            ps.println("<li><a class=\"auth1\" sn=\""+entity.getClassName()+"Controller.add\" href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/add\"><span class=\"fa fa-plus\"></span> 添加"+entity.getClassShowName()+"</a></li>");
             ps.println("</ul></div></div></body></html>");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
