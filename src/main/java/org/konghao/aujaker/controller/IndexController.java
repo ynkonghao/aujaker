@@ -3,6 +3,7 @@ package org.konghao.aujaker.controller;
 import org.apache.commons.io.FileUtils;
 import org.konghao.aujaker.service.IProjectService;
 import org.konghao.aujaker.tools.ConfigTools;
+import org.konghao.aujaker.tools.ConstructionSessionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,15 +39,14 @@ public class IndexController {
         try {
             if(files.length>=1) {
                 String fileName = files[0].getOriginalFilename();
-                System.out.println("======="+fileName);
                 String dirName = UUID.randomUUID().toString();
-                File targetFile = new File(configTools.getUploadPath("/")+ dirName+getFileName(fileName));
+                ConstructionSessionTools.setDir(request, dirName); //放到Session， 方便销毁
+                File targetFile = new File(configTools.getUploadPath("/")+ dirName+"/"+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 
                 String artId = projectService.initProject(configTools.getUploadPath("/")+dirName, targetFile.getAbsolutePath());
 
                 String path = "/"+dirName+"/"+artId+"/"+artId+".tar.gz";
-                System.out.println(path);
                 return path;
             } else {
             }

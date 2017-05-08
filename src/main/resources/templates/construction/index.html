@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
+    <head>
+        <title>在线构造项目</title>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <script type="text/javascript" src="/web/construction.js"></script>
+    </head>
+    <body>
+        <div th:fragment="content" th:remove="tag">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">第一步：Maven配置</div>
+                            <div class="panel-body">
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">GroupID：</div>
+                                        <input name="groupId" type="text" class="form-control" th:value="${maven ne null?maven.groupId:''}" placeholder="域名反写（英文），如：com.zzsharing.aujaker" />
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">ArtifactID：</div>
+                                        <input name="artifactId" type="text" class="form-control" th:value="${maven ne null?maven.artifactId:''}" placeholder="项目名称（英文），如：aujaker" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button class="btn btn-primary save-btn" step="1"><i class="fa fa-save"></i> 暂存</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">第二步：数据库配置</div>
+                            <div class="panel-body">
+                                <div style="display:None">
+                                    <input name="url-hide" th:value="${db ne null?db.url:''}"/>
+                                    <input name="port-hide" th:value="${db ne null?db.port:''}"/>
+                                    <input name="db-hide" th:value="${db ne null?db.database:''}"/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">类型</div>
+                                        <div class="form-control">
+                                            <input type="radio" name="type" value="mysql" id="status_1" th:checked="${db ne null and db.type eq 'mysql'}?'checked'"/><label for="status_1">&nbsp;MySQL</label>
+                                            <input type="radio" name="type" value="sqlite3" id="status_0" th:checked="${db ne null and db.type eq 'sqlite3'}?'checked'"/><label for="status_0">&nbsp;SQLite3</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div class="input-group db-part">
+                                        <div class="input-group-addon">数据库：</div>
+                                        <input name="url" type="text" class="form-control mysql-need" th:value="${db ne null?db.url:''}" placeholder="如：localhost" />
+                                        <div class="input-group-addon mysql-need">:</div>
+                                        <input name="port" type="text" class="form-control mysql-need" th:value="${db ne null?db.port:''}" placeholder="如：3306" />
+                                        <div class="input-group-addon mysql-need">/</div>
+                                        <input name="database" type="text" class="form-control" th:value="${db ne null?db.database:''}" placeholder="如：aujaker" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group mysql-need">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">用户名：</div>
+                                        <input name="username" type="text" class="form-control" th:value="${db ne null?db.username:''}" placeholder="数据库用户名" />
+                                        <div class="input-group-addon">密码：</div>
+                                        <input name="password" type="text" class="form-control" th:value="${db ne null?db.password:''}" placeholder="数据库密码" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button class="btn btn-primary save-btn" step="2"><i class="fa fa-save"></i> 暂存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            第三步：创建实体对象
+                            <a href="javascript:void(0)" class="btn btn-sm btn-danger add-class-btn" style="float:right;margin-top:-4px;"><i class="fa fa-plus"></i> 添加实体</a>
+                        </div>
+                        <div class="panel-body class-list">
+
+                            <div th:if="${cls ne null}" th:remove="tag">
+                            <div class="col-md-4" th:each="c : ${cls}">
+                                <div class="panel panel-danger single-class" th:attr="className=${c.className}">
+                                <div class="panel-heading" th:title="${c.author}"><b th:remove="tag" th:text="${c.classShowName}"></b>（<span th:remove="tag" th:text="${c.className}"></span>，表名：<span th:remove="tag" th:text="${c.tableName}"></span>）<a href="javascript:void(0)" onclick="removeCls(this)" th:attr="className=${c.className}" title="删除实体类" style="float:right;"><i class="fa fa-remove"></i></a></div>
+                                <div class="panel-body">
+                                    <div th:each="pro : ${c.propertyDtoList}" th:remove="tag">
+                                        <div class="alert alert-info" th:attr="className=${c.className}">
+                                            <a href="javascript:void(0)" onclick="removePro(this)" th:attr="className=${c.className}, proName=${pro.name}" style="float:right;" title="删除属性"><i class="fa fa-remove"></i></a>
+                                            <p th:text="${pro.type}+' '+${pro.name}+' ('+${pro.columnName}+')'"></p>
+                                            <p><b th:remove="tag" th:text="${pro.comment}"></b>，<b th:remove="tag" th:text="${pro.isPk eq '1'?'主键':'非主键'}"></b>，<b th:remove="tag" th:text="${pro.isLob eq '1'?'长文本':'非长文本'}"></b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer"><button class="btn btn-primary" onclick="addProperty(this)"><i class="fa fa-plus"></i> 添加属性</button></div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <a href="/construction/show" class="btn btn-lg btn-primary"><i class="fa fa-eye"></i> 预览项目框架</a>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>

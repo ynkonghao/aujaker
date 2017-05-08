@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
+    <head>
+        <title>在线构造项目</title>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <style>
+            .remind-info {
+                color:#F00;
+            }
+        </style>
+        <script type="text/javascript" src="/web/construction-show.js"></script>
+    </head>
+    <body>
+        <div th:fragment="content" th:remove="tag">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">第一步：Maven配置</div>
+                            <div class="panel-body" th:if="${maven ne null}">
+                                <input name="hasMaven" type="hidden" value="1"/>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">GroupID：</div>
+                                        <span type="text" class="form-control" th:text="${maven ne null?maven.groupId:''}" ></span>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">ArtifactID：</div>
+                                        <span name="artifactId" type="text" class="form-control" th:text="${maven ne null?maven.artifactId:''}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body" th:if="${maven eq null}">
+                                <p class="remind-info">请选配置Maven信息</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">第二步：数据库配置</div>
+                            <div class="panel-body" th:if="${db ne null}">
+                                <input name="hasDb" type="hidden" value="1"/>
+                                <div style="display:None">
+                                    <input name="url-hide" th:value="${db ne null?db.url:''}"/>
+                                    <input name="port-hide" th:value="${db ne null?db.port:''}"/>
+                                    <input name="db-hide" th:value="${db ne null?db.database:''}"/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">类型：</div>
+                                        <div class="form-control" th:text="${db.type}"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">数据库：</div>
+                                        <div th:if="${db.type eq 'mysql'}" class="form-control" th:text="${db.url}+':'+${db.port}+'/'+${db.database}"></div>
+                                        <div th:if="${db.type eq 'sqlite3'}" class="form-control" th:text="${db.database}"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" th:if="${db.type eq 'mysql'}">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">用户名：</div>
+                                        <span name="username" class="form-control" th:text="${db ne null?db.username:''}"></span>
+                                        <div class="input-group-addon">密码：</div>
+                                        <span name="password" class="form-control" th:text="${db ne null?db.password:''}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body" th:if="${db eq null}">
+                                <p class="remind-info">请先配置数据库信息</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            第三步：实体对象（<b class="modelSize" th:text="${#lists.size(cls)}"></b>）
+                        </div>
+                        <div class="panel-body">
+                            <div th:if="${cls ne null}" th:remove="tag">
+                            <div class="col-md-4" th:each="c : ${cls}">
+                                <div class="panel panel-danger single-class" th:attr="className=${c.className}">
+                                <div class="panel-heading" th:title="${c.author}"><b th:remove="tag" th:text="${c.classShowName}"></b>（<span th:remove="tag" th:text="${c.className}"></span>，表名：<span th:remove="tag" th:text="${c.tableName}"></span>）</div>
+                                <div class="panel-body">
+                                    <div th:each="pro : ${c.propertyDtoList}" th:remove="tag">
+                                        <div class="alert alert-info" th:attr="className=${c.className}">
+                                            <p th:text="${pro.type}+' '+${pro.name}+' ('+${pro.columnName}+')'"></p>
+                                            <p><b th:remove="tag" th:text="${pro.comment}"></b>，<b th:remove="tag" th:text="${pro.isPk eq '1'?'主键':'非主键'}"></b>，<b th:remove="tag" th:text="${pro.isLob eq '1'?'长文本':'非长文本'}"></b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <a href="javascript:void(0)" class="btn btn-lg btn-primary save-item"><i class="fa fa-save"></i> 立即生成项目</a>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>
