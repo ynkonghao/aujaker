@@ -40,7 +40,6 @@ public class IndexController {
             if(files.length>=1) {
                 String fileName = files[0].getOriginalFilename();
                 String dirName = UUID.randomUUID().toString();
-                ConstructionSessionTools.setDir(request, dirName); //放到Session， 方便销毁
                 File targetFile = new File(configTools.getUploadPath("/")+ dirName+"/"+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 

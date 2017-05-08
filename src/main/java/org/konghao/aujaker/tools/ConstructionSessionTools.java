@@ -20,24 +20,6 @@ public class ConstructionSessionTools {
     private static final String CLS_NAME = "cls-session";
     private static final String DIR_NAME = "dir-names";
 
-    public static void setDir(HttpServletRequest request, String dirName) {
-        HttpSession session = request.getSession();
-        List<String> list = (List<String>) session.getAttribute(DIR_NAME);
-        if(list==null) {
-            list = new ArrayList<>();
-        }
-        list.add(dirName);
-        session.setAttribute(DIR_NAME, list);
-    }
-
-    public static List<String> getDirs(HttpSession session) {
-        List<String> list = (List<String>) session.getAttribute(DIR_NAME);
-        if(list==null) {
-            list = new ArrayList<>();
-        }
-        return list;
-    }
-
     public static void saveMaven(HttpServletRequest request, String groupId, String artifactId) {
         MavenDto dto = new MavenDto(groupId, artifactId);
         setMaven(request, dto);

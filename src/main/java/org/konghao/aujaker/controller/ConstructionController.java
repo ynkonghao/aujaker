@@ -148,7 +148,6 @@ public class ConstructionController {
     ResDto build(HttpServletRequest request) {
         try {
             String dirName = System.currentTimeMillis()+"";
-            ConstructionSessionTools.setDir(request, dirName); //放到Session， 方便销毁
             File targetFile = new File(configTools.getUploadPath("/"+dirName)+"/"+dirName+".xml");
             BuildItemTools.buildXml(request, targetFile);
             String artId = projectService.initProject(configTools.getUploadPath("/"+dirName), targetFile.getAbsolutePath());
