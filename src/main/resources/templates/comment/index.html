@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
+    <head>
+        <title>感谢您的点评-Aujaker</title>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    </head>
+    <body>
+        <div th:fragment="content" th:remove="tag">
+            <div class="container">
+                <div class="col-md-3" style="padding-top:10px;background:#FFF;">
+                    <div class="alert alert-warning">
+                        <h4>Aujaker - Java项目神器</h4>
+                        <p>Aujaker 是一款自动生成Spring boot项目的便捷工具。</p>
+                        <p>所生成的项目包括：<br/>1、可进行二次开发的项目源文件；<br/>2、可直接运行的jar文件。</p>
+                        <p style="width:100%;padding:3px 0px;"></p>
+                        <p>
+                            可通过以下方式自动生成项目：<br/>
+                            1、<a href="/">上传XML文件创建</a>；<br/>
+                            2、<a href="/excel/index">上传Excel文件创建</a>；<br/>
+                            3、<a href="/construction/index">在线创建</a>。
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <!--PC打分版-->
+                    <div id="SOHUCS" ></div>
+                    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+                    <script type="text/javascript">
+                    window._config = { showScore: true };
+                    window.changyan.api.config({
+                    appid: 'cyt0eoqTc',
+                    conf: 'prod_c70a03eecf464b8d08e1e445383dbe03'
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>

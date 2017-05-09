@@ -13,12 +13,17 @@
 
         <link type="text/css" rel="stylesheet" href="/web/index.css"/>
         <script type="text/javascript" src="/web/upload.js"></script>
+        <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <div th:fragment="content" th:remove="tag">
             <div class="container img text-center"><span><i class="fa fa-code"></i></span></div>
             <div class="container">
-                <div class="input-group upload-part input-group-lg">
+                <div class="input-group upload-part input-group-lg" data-toggle="tooltip" data-placement="bottom" title="请选择XML文件上传，可点击上方“模板下载”参考XML文件格式">
                     <input type="file" class="form-control" onchange="uploadFile(this)" placeholder="Recipient's username" aria-describedby="basic-addon2"/>
                     <span class="input-group-addon" id="generate-item"><i class="fa fa-upload"></i> 选择XML文件上传</span>
                 </div>

@@ -2,7 +2,7 @@
 <html lang="zh-CN"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      th:fragment="mymodel">
+      th:fragment="webModel">
 
     <head th:fragment="head">
         <title>后台首页</title>
@@ -42,6 +42,7 @@
                             <li><a href="">版本信息</a></li>
                             <li><a href="">使用说明</a></li>
                             <li><a href="">视频教程</a></li>
+                            <li><a href="/comment"><i class="fa fa-commenting"></i> 对我点评</a></li>
                         </ul>
                     </div>
                 </div>
@@ -55,5 +56,16 @@
         <nav class="navbar navbar-fixed-bottom web-model-bottom">
             <p>开发人员：孔浩、钟述林、周勤生</p>
         </nav>
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?64715869f0a3a7161da725e219e78c7c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"0","bdPos":"right","bdTop":"100"},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
     </body>
 </html>
