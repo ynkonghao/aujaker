@@ -88,14 +88,20 @@ public class ProjectService implements IProjectService {
 			Runtime runtime = Runtime.getRuntime();
 
 			String exec = null;
+			Process process ;
 			if(path.charAt(1)==':') {
 				//说明是win的系统
 				String disk = path.substring(0,2);
-				exec = "cmd /c "+disk+" && cd "+mpath+" && mvn clean package";
+				exec = "cmd /c "+disk+" && cd "+mpath+" && mvn clean package -Dmaven.test.skip=true";
+				process = runtime.exec(exec);
 			} else {
-				exec = "/c cd "+mpath+" && mvn clean package";
+//				exec = "/c cd "+mpath+" && mvn clean package";
+//				exec = "/bin/bash -c cd "+mpath+" && mvn clean package -Dmaven.test.skip=true";
+				System.out.println("===="+mpath);
+				String [] cmd = {"/bin/bash", "-c", "cd "+mpath+ " && mvn clean package -Dmaven.test.skip=true"};
+				process = runtime.exec(cmd);
 			}
-			Process process = runtime.exec(exec);
+//			Process process = runtime.exec(exec);
 			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String str = null;
 			while((str=br.readLine())!=null) {
