@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
+    <head>
+        <title>自动代码管理系统</title>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link type="text/css" rel="stylesheet" href="/web/index.css"/>
+    </head>
+    <body>
+        <div th:fragment="content" th:remove="tag">
+            <div class="container">
+                <div th:if="${datas eq null or datas eq ''}" class="text-center">无任何项目创建记录</div>
+                <div  th:utext="${datas}"></div>
+            </div>
+        </div>
+	</body>
+</html>

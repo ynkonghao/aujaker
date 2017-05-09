@@ -23,12 +23,20 @@ function uploadFile(obj) {
             contentType : false,
             success: function(res) {
                 console.log(res);
-                $("#generate-item").html('<i class="fa fa-download"></i> 生成完成，点击下载');
-                $("#generate-item").css("color", "#00F");
+                if(res=='0') {
+                    alert("文件解析出错，请严格按照模板文件进行编排。点击上方“模板下载”参考模板文件");
+                    window.open('/templates/aujaker.xml');
+                    $("#generate-item").click(function() {
+                        window.open('/templates/aujaker.xml');
+                    });
+                } else {
+                    $("#generate-item").html('<i class="fa fa-download"></i> 生成完成，点击下载');
+                    $("#generate-item").css("color", "#00F");
 
-                $("#generate-item").click(function() {
-                    window.location.href = res;
-                });
+                    $("#generate-item").click(function() {
+                        window.location.href = res;
+                    });
+                }
             },
             error: function(res) {
                 alert("提交出错:"+res);

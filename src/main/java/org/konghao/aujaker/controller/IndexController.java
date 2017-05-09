@@ -4,8 +4,10 @@ import org.apache.commons.io.FileUtils;
 import org.konghao.aujaker.service.IProjectService;
 import org.konghao.aujaker.tools.ConfigTools;
 import org.konghao.aujaker.tools.ConstructionSessionTools;
+import org.konghao.aujaker.tools.RecordTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,9 @@ public class IndexController {
     @Autowired
     private IProjectService projectService;
 
+    @Autowired
+    private RecordTools recordTools;
+
     @GetMapping({"", "/", "index", "/index"})
     public String index() {
         return "index";
@@ -46,17 +51,26 @@ public class IndexController {
                 String artId = projectService.initProject(configTools.getUploadPath("/")+dirName, targetFile.getAbsolutePath());
 
                 String path = "/"+dirName+"/"+artId+"/"+artId+".tar.gz";
+
+                recordTools.addRecord(RecordTools.XML_TYPE, request.getRemoteAddr());
                 return path;
             } else {
             }
             return "1";
         } catch (Exception e) {
 //            throw new SystemException("文件解析出错");
+            //e.printStackTrace();
             return "0";
         }
     }
 
     private String getFileName(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."), fileName.length());
+    }
+
+    @GetMapping(value = "record")
+    public String record(Model model) {
+        model.addAttribute("datas", recordTools.readRecord());
+        return "record";
     }
 }

@@ -24,9 +24,7 @@ public class MyTimer {
             File f = new File(configTools.getUploadPath("/"));
             File [] files = f.listFiles();
             for(File file : files) {
-                if(file.isFile()) {
-                    FileUtils.forceDelete(file);
-                } else if(file.isDirectory()) {
+                if(file.isDirectory()) {
                     FileUtils.deleteDirectory(file);
                 }
             }

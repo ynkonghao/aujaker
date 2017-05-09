@@ -5,10 +5,7 @@ import org.konghao.aujaker.dto.DBDto;
 import org.konghao.aujaker.dto.PropertyDto;
 import org.konghao.aujaker.dto.ResDto;
 import org.konghao.aujaker.service.IProjectService;
-import org.konghao.aujaker.tools.BuildItemTools;
-import org.konghao.aujaker.tools.ConfigTools;
-import org.konghao.aujaker.tools.ConstructionSessionTools;
-import org.konghao.aujaker.tools.NormalTools;
+import org.konghao.aujaker.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +32,9 @@ public class ConstructionController {
 
     @Autowired
     private IProjectService projectService;
+
+    @Autowired
+    private RecordTools recordTools;
 
     @GetMapping(value = "index")
     public String index(Model model, HttpServletRequest request) {
@@ -153,6 +153,7 @@ public class ConstructionController {
             String artId = projectService.initProject(configTools.getUploadPath("/"+dirName), targetFile.getAbsolutePath());
 
             String path = "/"+dirName+"/"+artId+"/"+artId+".tar.gz";
+            recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());
             return new ResDto("1", path);
         } catch (Exception e) {
             return new ResDto("0", e.getMessage());

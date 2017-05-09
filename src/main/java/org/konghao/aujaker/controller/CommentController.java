@@ -16,4 +16,9 @@ public class CommentController {
     public String index() {
         return "comment/index";
     }
+
+    @GetMapping(value = "api")
+    public String api() {
+        return "comment/api";
+    }
 }
