@@ -1,23 +1,16 @@
 package org.konghao.aujaker.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
-import org.konghao.aujaker.model.SetRequestThread;
 import org.konghao.aujaker.service.IProjectService;
 import org.konghao.aujaker.tools.ConfigTools;
-import org.konghao.aujaker.tools.ConstructionSessionTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,27 +31,6 @@ public class IndexController {
     @GetMapping({"", "/", "index", "/index"})
     public String index() {
         return "index";
-    }
-    
-    @GetMapping("/test")
-    public String test(HttpServletRequest req,HttpServletResponse resp) {
-    	SetRequestThread t = new SetRequestThread(req);
-    	new Thread(t).start();
-    	return "test";
-    }
-    
-    @GetMapping("/testResp/{len}")
-    public void testResp(@PathVariable int len,HttpServletRequest req,HttpServletResponse resp) {
-    	try {
-			List<String> lists = (List<String>)req.getAttribute("lists");
-			if(len>lists.size()) {
-				resp.getWriter().println("end");
-			} else {
-				resp.getWriter().println(lists.get(len));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
     }
 
     @PostMapping(value="uploadXml")
