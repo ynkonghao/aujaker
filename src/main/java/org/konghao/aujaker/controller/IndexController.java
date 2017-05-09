@@ -38,28 +38,7 @@ public class IndexController {
     public String index() {
         return "index";
     }
-    
-    @GetMapping("/test")
-    public String test(HttpServletRequest req,HttpServletResponse resp) {
-    	SetRequestThread t = new SetRequestThread(req);
-    	new Thread(t).start();
-    	return "test";
-    }
-    
-    @GetMapping("/testResp/{len}")
-    public void testResp(@PathVariable int len,HttpServletRequest req,HttpServletResponse resp) {
-    	try {
-			List<String> lists = (List<String>)req.getAttribute("lists");
-			if(len>lists.size()) {
-				resp.getWriter().println("end");
-			} else {
-				resp.getWriter().println(lists.get(len));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-
+   
     @PostMapping(value="uploadXml")
     public @ResponseBody
     String uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
