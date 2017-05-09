@@ -148,14 +148,15 @@ public class ConstructionController {
     ResDto build(HttpServletRequest request) {
         try {
             String dirName = System.currentTimeMillis()+"";
-            File targetFile = new File(configTools.getUploadPath("/"+dirName)+"/"+dirName+".xml");
+            File targetFile = new File(configTools.getUploadPath("/item/"+dirName)+"/"+dirName+".xml");
             BuildItemTools.buildXml(request, targetFile);
-            String artId = projectService.initProject(configTools.getUploadPath("/"+dirName), targetFile.getAbsolutePath());
+            String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
 
-            String path = "/"+dirName+"/"+artId+"/"+artId+".tar.gz";
+            String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
             recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());
             return new ResDto("1", path);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResDto("0", e.getMessage());
         }
     }

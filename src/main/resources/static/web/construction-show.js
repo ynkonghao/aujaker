@@ -17,14 +17,18 @@ function saveItem(obj) {
             $(obj).attr("disabled", "disabled");
             $(obj).html("<i class='fa fa-spinner'></i> 项目生成中……");
             $.post('/construction/build',{}, function(res) {
-                //console.log(res.msg);
-                $(obj).html('<i class="fa fa-download"></i> 生成完成，点击下载');
-                $(obj).removeAttr("disabled");
-                $(obj).attr("remove","1");
+//                console.log(res.msg);
+                if(res.code=='1') {
+                    $(obj).html('<i class="fa fa-download"></i> 生成完成，点击下载');
+                    $(obj).removeAttr("disabled");
+                    $(obj).attr("remove","1");
 
-                $(obj).click(function() {
-                    window.location.href = res.msg;
-                });
+                    $(obj).click(function() {
+                        window.location.href = res.msg;
+                    });
+                } else {
+                    alert("出现错误："+res.msg);
+                }
             }, "json");
         }
     }

@@ -44,12 +44,12 @@ public class IndexController {
             if(files.length>=1) {
                 String fileName = files[0].getOriginalFilename();
                 String dirName = UUID.randomUUID().toString();
-                File targetFile = new File(configTools.getUploadPath("/")+ dirName+"/"+dirName+getFileName(fileName));
+                File targetFile = new File(configTools.getUploadPath("/item/"+ dirName)+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 
-                String artId = projectService.initProject(configTools.getUploadPath("/")+dirName, targetFile.getAbsolutePath());
+                String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
 
-                String path = "/"+dirName+"/"+artId+"/"+artId+".tar.gz";
+                String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 
                 recordTools.addRecord(RecordTools.XML_TYPE, request.getRemoteAddr());
                 return path;
@@ -58,7 +58,7 @@ public class IndexController {
             return "1";
         } catch (Exception e) {
 //            throw new SystemException("文件解析出错");
-            //e.printStackTrace();
+            e.printStackTrace();
             return "0";
         }
     }

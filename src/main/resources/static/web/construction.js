@@ -220,6 +220,7 @@ function addProperty(obj) {
                         '<div class="form-control">'+
                             '<input type="radio" name="pro-pk" value="1" id="pk_1" /><label for="pk_1">&nbsp;是主键</label>'+
                             '<input type="radio" name="pro-pk" value="0" id="pk_0" checked="checked"/><label for="pk_0">&nbsp;非主键</label>'+
+                            '&nbsp;&nbsp;(每个对象有且只有一个主键)'+
                         '</div>'+
                     '</div>'+
                 '</div>'+

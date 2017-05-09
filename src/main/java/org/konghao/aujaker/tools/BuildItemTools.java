@@ -58,6 +58,7 @@ public class BuildItemTools {
 
             ps.println("</aujaker>");
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if(ps!=null) {ps.close();}
         }

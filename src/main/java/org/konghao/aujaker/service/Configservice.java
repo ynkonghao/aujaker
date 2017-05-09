@@ -17,6 +17,8 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.FinalValue;
+import org.konghao.aujaker.tools.ConfigTools;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,11 +27,16 @@ public class Configservice implements IConfigService {
 	private final static String BASE_URL = "baseSrc";
 	private final static String BASE_VIEW_URL = "baseView";
 
+	@Autowired
+	private ConfigTools configTools;
+
 	@Override
 	public void copyBaseSrc(String path,String artifactId) {
 		try {
-			File f = new File(
-					RepositoryService.class.getClassLoader().getResource(BASE_URL).getFile());
+//			File f = new File(RepositoryService.class.getClassLoader().getResource(BASE_URL).getFile());
+			File f = new File(configTools.getUploadPath("/base")+BASE_URL);
+			System.out.println("======="+f.getAbsolutePath());
+			System.out.println("============"+f.listFiles());
 			File[] files = f.listFiles();
 			for(File file:files) {
 				String name = file.getName();
@@ -51,8 +58,8 @@ public class Configservice implements IConfigService {
 	@Override
 	public void copyBaseView(String path,String artifactId) {
 		try {
-			File f = new File(
-					RepositoryService.class.getClassLoader().getResource(BASE_VIEW_URL).getFile());
+//			File f = new File(RepositoryService.class.getClassLoader().getResource(BASE_VIEW_URL).getFile());
+			File f = new File(configTools.getUploadPath("/base")+BASE_VIEW_URL);
 			File[] files = f.listFiles();
 			for(File file:files) {
 				String name = file.getName();

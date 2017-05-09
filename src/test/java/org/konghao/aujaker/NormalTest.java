@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+
 /**
  * Created by 钟述林 393156105@qq.com on 2017/5/5 16:06.
  */
@@ -37,5 +39,11 @@ public class NormalTest {
     public void test03() {
         String str = recordTools.readRecord();
         System.out.println("=========="+str);
+    }
+
+    @Test
+    public void test04() {
+        File f = new File("D:/temp/upload");
+        System.out.println(f.getName());
     }
 }

@@ -21,13 +21,8 @@ public class MyTimer {
     @Scheduled(cron = "50 20 22 * * ?")
     public void deleteFiles() {
         try {
-            File f = new File(configTools.getUploadPath("/"));
-            File [] files = f.listFiles();
-            for(File file : files) {
-                if(file.isDirectory()) {
-                    FileUtils.deleteDirectory(file);
-                }
-            }
+            File f = new File(configTools.getUploadPath("/item"));
+            FileUtils.deleteDirectory(f);
         } catch (IOException e) {
             e.printStackTrace();
         }

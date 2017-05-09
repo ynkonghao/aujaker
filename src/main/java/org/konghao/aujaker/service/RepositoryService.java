@@ -34,6 +34,7 @@ public class RepositoryService implements IRepositoryService {
 	public void generateRepository(ClassEntity entity, String path,String artifactId) {
 		path = CommonKit.generatePath(path, artifactId, entity,"repository");
 		PropertiesBaseEntity pbe = classEntityService.getPrimaryProperties(entity);
+
 		String fileName = "I"+entity.getClassName()+"Repository";
 		StringBuffer sb = new StringBuffer();
 		sb.append("package ").append(entity.getPkgName()).append(".repository;\n");
