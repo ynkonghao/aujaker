@@ -32,6 +32,8 @@ public class ProjectService implements IProjectService {
 	private IControllerService controllerService;
 	@Autowired
 	private ITestTemplatesService testTemplatesService;
+	@Autowired
+	private IExcelService excelService;
 
 	@Autowired
 	private IViewService viewService;
@@ -141,6 +143,30 @@ public class ProjectService implements IProjectService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String initProjectByXls(String path, String xlsFile) {
+		// TODO Auto-generated method stub
+		Map<String,Object> maps = excelService.xlsToEntity(xlsFile);
+		modelService.generateModels(path, maps);
+
+		configService.generateExcelApplicationConfig(path);
+		configService.generateExcelPomConfig(path);
+
+		configService.copyBaseSrc(path,(String)maps.get(FinalValue.ARTIFACT_ID));
+		configService.copyBaseView(path,(String)maps.get(FinalValue.ARTIFACT_ID));
+		configService.generateApplicationConfig(path, (String)maps.get(FinalValue.GROUP_ID), (String)maps.get(FinalValue.ARTIFACT_ID));
+		repositoryService.generateRepository(maps, path);
+		businessService.generateService(maps, path);
+		controllerService.generateControllers(path, maps);
+		viewService.generateViews(path, maps);
+		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
+		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+
+		this.generateReleasePackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+
+		return (String)maps.get(FinalValue.ARTIFACT_ID);
 	}
 
 }

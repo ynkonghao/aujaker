@@ -90,4 +90,11 @@ public class PropertiesBaseEntity {
 	public void setPkType(int pkType) {
 		this.pkType = pkType;
 	}
+	@Override
+	public String toString() {
+		return "PropertiesBaseEntity [id=" + id + ", name=" + name + ", columnName=" + columnName + ", type=" + type
+				+ ", isLob=" + isLob + ", commet=" + commet + ", isPk=" + isPk + ", pkType=" + pkType + "]";
+	}
+	
+	
 }

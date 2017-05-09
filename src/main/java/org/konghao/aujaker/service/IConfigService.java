@@ -61,5 +61,9 @@ public interface IConfigService {
 	 * @param artifactId
 	 */
 	public void generateApplicationConfig(String path,String groupId,String artifactId);
+	
+	public void generateExcelApplicationConfig(String path);
+	
+	public void generateExcelPomConfig(String path);
 
 }
