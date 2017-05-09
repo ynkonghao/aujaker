@@ -3,7 +3,6 @@ package org.konghao.aujaker.controller;
 import org.apache.commons.io.FileUtils;
 import org.konghao.aujaker.service.IProjectService;
 import org.konghao.aujaker.tools.ConfigTools;
-import org.konghao.aujaker.tools.ConstructionSessionTools;
 import org.konghao.aujaker.tools.RecordTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +36,7 @@ public class IndexController {
     public String index() {
         return "index";
     }
-
+   
     @PostMapping(value="uploadXml")
     public @ResponseBody
     String uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
