@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Test</title>
+<script type="text/javascript" src="/basic/js-lib/jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	var len = 0;
+	 window.setInterval(function () {
+         $.get("testResp/"+len,function(data){
+        	 $("#tt").html($("#tt").html()+"<br/>"+data);
+         });
+         len++;
+     }, 1000);
+});
+</script>
+</head>
+<body>
+<div id="tt"></div>
+</body>
+</html>
