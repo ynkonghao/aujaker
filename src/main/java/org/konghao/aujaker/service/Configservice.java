@@ -16,6 +16,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.konghao.aujaker.kit.CommonKit;
+import org.konghao.aujaker.model.FinalValue;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -367,6 +368,29 @@ public class Configservice implements IConfigService {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void generateExcelApplicationConfig(String path) {
+		Map<String,String> configs = new HashMap<String,String>();
+		configs.put("{artifactId}",FinalValue.EXCEL_ARTIFACTID);
+		configs.put("{dataType}", FinalValue.EXCEL_DB);
+		configs.put("{package}",FinalValue.EXCEL_GROUPID);
+		configs.put("{url}",FinalValue.EXCEL_DB_URL);
+		configs.put("{driver}",FinalValue.EXCEL_DB_DRIVER);
+		configs.put("{dataname}", FinalValue.EXCEL_DB_NAME);
+		generateApplicationPropertiesByMap(path,configs);
+	}
+
+	@Override
+	public void generateExcelPomConfig(String path) {
+		Map<String,String> configs = new HashMap<String,String>();
+		configs.put("{artifactId}",FinalValue.EXCEL_ARTIFACTID);
+		configs.put("{dataType}", FinalValue.EXCEL_DB);
+		configs.put("{groupId}",FinalValue.EXCEL_GROUPID);
+		configs.put("{databaseDriverConnection}", SQLITE_DEP);
+		configs.put("{dataname}", FinalValue.EXCEL_DB_NAME);
+		generateApplicationPomByMap(path, configs);
 	}
 
 }

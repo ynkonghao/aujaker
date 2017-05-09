@@ -10,6 +10,8 @@ public interface IProjectService {
 	String initProject(String path, String xmlFile);
 
 	public void initProject(String path);
+	
+	public String initProjectByXls(String path,String xlsFile);
 	/**
 	 * 通过maven对项目进行打包package
 	 * @param path
