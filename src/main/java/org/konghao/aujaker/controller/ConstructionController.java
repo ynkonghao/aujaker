@@ -153,6 +153,7 @@ public class ConstructionController {
             String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
 
             String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
+//            recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());
             recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());
             return new ResDto("1", path);
         } catch (Exception e) {

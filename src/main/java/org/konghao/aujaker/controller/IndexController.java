@@ -51,6 +51,7 @@ public class IndexController {
 
                 String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 
+
                 recordTools.addRecord(RecordTools.XML_TYPE, request.getRemoteAddr());
                 return path;
             } else {
@@ -68,7 +69,10 @@ public class IndexController {
     }
 
     @GetMapping(value = "record")
-    public String record(Model model) {
+    public String record(Model model, HttpServletRequest request) {
+        System.out.println("======"+request.getAttribute("X-Real-IP"));
+        System.out.println("------"+request.getAttribute("X-real-ip"));
+        System.out.println("------"+request.getRemoteAddr());
         model.addAttribute("datas", recordTools.readRecord());
         return "record";
     }

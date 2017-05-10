@@ -1,15 +1,5 @@
 package org.konghao.aujaker.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.io.FileUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -20,6 +10,12 @@ import org.konghao.aujaker.model.FinalValue;
 import org.konghao.aujaker.tools.ConfigTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 @Service
 public class Configservice implements IConfigService {
@@ -35,8 +31,6 @@ public class Configservice implements IConfigService {
 		try {
 //			File f = new File(RepositoryService.class.getClassLoader().getResource(BASE_URL).getFile());
 			File f = new File(configTools.getUploadPath("/base")+BASE_URL);
-			System.out.println("======="+f.getAbsolutePath());
-			System.out.println("============"+f.listFiles());
 			File[] files = f.listFiles();
 			for(File file:files) {
 				String name = file.getName();

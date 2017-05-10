@@ -97,8 +97,7 @@ public class ProjectService implements IProjectService {
 			} else {
 //				exec = "/c cd "+mpath+" && mvn clean package";
 //				exec = "/bin/bash -c cd "+mpath+" && mvn clean package -Dmaven.test.skip=true";
-				System.out.println("===="+mpath);
-				String [] cmd = {"/bin/bash", "-c", "cd "+mpath+ " && mvn clean package -Dmaven.test.skip=true"};
+				String [] cmd = {"/bin/bash", "-c", "cd "+(path+artifactId)+ " && mvn clean package -Dmaven.test.skip=true"};
 				process = runtime.exec(cmd);
 			}
 //			Process process = runtime.exec(exec);

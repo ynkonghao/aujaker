@@ -23,6 +23,7 @@ public class RecordTools {
     public static final String EXCEL_TYPE = "3";
 
     public void addRecord(String type, String ip) {
+        ip = ip==null?"":ip;
         PrintStream ps = null;
         try {
             String old = readRecord();
@@ -57,7 +58,7 @@ public class RecordTools {
     private String buildCon(String type, String ip) {
         String t = (XML_TYPE.equals(type))?"XML":(WEB_TYPE.equals(type)?"在线":"Excel");
         StringBuffer sb = new StringBuffer();
-        sb.append("<p>").append(curDate()).append(" 以[<b>").append(t).append("</b>]方式创建了项目 ").append(ip).append("</p>\n");
+        sb.append("<p>").append(curDate()).append(" 以[<b>").append(t).append("</b>]方式创建了项目 ").append(ip).append(" ").append(AddressTools.getAddressByIp(ip)).append("</p>\n");
         return sb.toString();
     }
 

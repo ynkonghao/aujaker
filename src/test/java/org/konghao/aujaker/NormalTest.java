@@ -2,6 +2,7 @@ package org.konghao.aujaker;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.konghao.aujaker.tools.AddressTools;
 import org.konghao.aujaker.tools.NormalTools;
 import org.konghao.aujaker.tools.RecordTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,11 @@ public class NormalTest {
     public void test04() {
         File f = new File("D:/temp/upload");
         System.out.println(f.getName());
+    }
+
+    @Test
+    public void test05() {
+        String str = AddressTools.getAddressByIp("61.166.50.239");
+        System.out.println("==========str========"+str);
     }
 }
