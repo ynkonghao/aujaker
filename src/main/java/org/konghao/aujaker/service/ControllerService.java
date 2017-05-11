@@ -1,15 +1,14 @@
 package org.konghao.aujaker.service;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.Map;
-
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.FinalValue;
 import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ControllerService implements IControllerService {
@@ -30,9 +29,9 @@ public class ControllerService implements IControllerService {
 		path = CommonKit.generatePath(path, artifactId, entity, "controller");
 		PrintStream ps = null;
 		try {
-			ps = new PrintStream(new FileOutputStream(path+"/"+entity.getClassName()+"Controller"+".java"));
+			ps = new PrintStream(new FileOutputStream(path+"/"+entity.getClassName()+"Controller"+".java"), true, "UTF-8");
 			generateTop(entity,ps,artifactId,groupId);
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if(ps!=null) ps.close();

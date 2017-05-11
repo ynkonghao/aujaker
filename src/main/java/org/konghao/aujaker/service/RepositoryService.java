@@ -1,16 +1,18 @@
 package org.konghao.aujaker.service;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.FinalValue;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RepositoryService implements IRepositoryService {
@@ -58,15 +60,19 @@ public class RepositoryService implements IRepositoryService {
 		
 		sb.append("\n");
 		sb.append("}");
-		FileWriter fw = null;
+//		FileWriter fw = null;
+		BufferedWriter bw = null;
 		try {
-			fw = new FileWriter(path+"/"+fileName+".java");
-			fw.write(sb.toString());
+//			fw = new FileWriter(path+"/"+fileName+".java");
+//			fw.write(sb.toString());
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path+"/"+fileName+".java"), "UTF-8"));
+			bw.write(sb.toString());
+			bw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(fw!=null) fw.close();
+				if(bw!=null) bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("kh")
+@ActiveProfiles("zsl")
 public class ProjectServiceTest {
 	@Autowired
 	private IProjectService projectService;

@@ -1,18 +1,17 @@
 package org.konghao.aujaker.service;
 
-import java.io.FileNotFoundException;
+import org.konghao.aujaker.kit.CommonKit;
+import org.konghao.aujaker.model.ClassEntity;
+import org.konghao.aujaker.model.FinalValue;
+import org.konghao.aujaker.model.PropertiesBaseEntity;
+import org.springframework.stereotype.Service;
+
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.konghao.aujaker.kit.CommonKit;
-import org.konghao.aujaker.model.ClassEntity;
-import org.konghao.aujaker.model.FinalValue;
-import org.konghao.aujaker.model.PropertiesBaseEntity;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ModelService implements IModelService {
@@ -32,9 +31,9 @@ public class ModelService implements IModelService {
 		path = CommonKit.generatePath(path, artifactId, entity, "model");
 		PrintStream ps = null;
 		try {
-			ps = new PrintStream(new FileOutputStream(path+"/"+entity.getClassName()+".java"));
+			ps = new PrintStream(new FileOutputStream(path+"/"+entity.getClassName()+".java"), true, "UTF-8");
 			generateTop(entity,ps);
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if(ps!=null) ps.close();

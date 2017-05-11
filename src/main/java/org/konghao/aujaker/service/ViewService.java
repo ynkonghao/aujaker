@@ -7,7 +7,6 @@ import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.List;
@@ -40,7 +39,7 @@ public class ViewService implements IViewService {
     private void generateIndexPage(String path, List<ClassEntity> entities, String artifactId) {
         PrintStream ps = null;
         try {
-            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, "")+"/index.html"));
+            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, "")+"/index.html"), true, "UTF-8");
             ps.println("<!DOCTYPE html>\n" +
                     "<html lang=\"zh-CN\"\n" +
                     "      xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
@@ -89,7 +88,7 @@ public class ViewService implements IViewService {
         path = CommonKit.generatePath(path, artifactId, entity, "controller");
         PrintStream ps = null;
         try {
-            ps = new PrintStream(new FileOutputStream(path+"/IndexController"+".java"));
+            ps = new PrintStream(new FileOutputStream(path+"/IndexController"+".java"), true, "UTF-8");
             //输出包名
             ps.println("package "+groupId+".controller;\n\n");
             ps.println("import org.springframework.stereotype.Controller;\n" +
@@ -103,7 +102,7 @@ public class ViewService implements IViewService {
                     "        return \"index\";\n" +
                     "    }\n" +
                     "}\n");
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if(ps!=null) ps.close();
@@ -118,7 +117,7 @@ public class ViewService implements IViewService {
     private void generateList(String path, String artifactId, ClassEntity entity) {
         PrintStream ps = null;
         try {
-            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, entity) + "/list.html"));
+            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, entity) + "/list.html"), true, "UTF-8");
             ps.println("<!DOCTYPE html>\n" +
                     "<html lang=\"zh-CN\"\n" +
                     "\t  xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
@@ -192,7 +191,7 @@ public class ViewService implements IViewService {
     private void generateModify(String path, String artifactId, String fun, ClassEntity entity) {
         PrintStream ps = null;
         try {
-            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, entity)+"/"+fun+".html"));
+            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, entity)+"/"+fun+".html"), true, "UTF-8");
             ps.println("<!DOCTYPE html>\n" +
                     "<html lang=\"zh-CN\"\n" +
                     "\t  xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
@@ -239,7 +238,7 @@ public class ViewService implements IViewService {
     private void generateMenu(String path, String artifactId, List<ClassEntity> entities) {
         PrintStream ps = null;
         try {
-            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, "fragments")+"/nav.html"));
+            ps = new PrintStream(new FileOutputStream(generatePath(path, artifactId, "fragments")+"/nav.html"), true, "UTF-8");
             ps.println("<!DOCTYPE html>\n" +
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n" +
                     "      xmlns:th=\"http://www.thymeleaf.org\"\n" +
@@ -278,7 +277,7 @@ public class ViewService implements IViewService {
             ps.println("</ul>\n</div>\n" +
                     "    </body>\n" +
                     "</html>");
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if(ps!=null) {ps.close();}
@@ -288,7 +287,7 @@ public class ViewService implements IViewService {
     private void generateNav(String path, ClassEntity entity) {
         PrintStream ps = null;
         try {
-            ps = new PrintStream(new FileOutputStream(path+"/"+"nav.html"));
+            ps = new PrintStream(new FileOutputStream(path+"/"+"nav.html"), true, "UTF-8");
             ps.println("<!DOCTYPE html>");
             ps.println("<html xmlns=\"http://www.w3.org/1999/xhtml\"");
             ps.println("xmlns:th=\"http://www.thymeleaf.org\">");
@@ -299,7 +298,7 @@ public class ViewService implements IViewService {
             ps.println("<li><a class=\"auth1\" sn=\""+entity.getClassName()+"Controller.list\" href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/list\"><span class=\"fa fa-list\"></span> "+entity.getClassShowName()+"列表</a></li>");
             ps.println("<li><a class=\"auth1\" sn=\""+entity.getClassName()+"Controller.add\" href=\"/"+CommonKit.lowcaseFirst(entity.getClassName())+"/add\"><span class=\"fa fa-plus\"></span> 添加"+entity.getClassShowName()+"</a></li>");
             ps.println("</ul></div></div></body></html>");
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if(ps!=null) ps.close();

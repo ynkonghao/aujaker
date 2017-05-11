@@ -81,7 +81,8 @@ public class Configservice implements IConfigService {
 	private void generateApplicationPropertiesByMap(String path, Map<String, String> configs) {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;
-		FileWriter fw = null;
+//		FileWriter fw = null;
+		BufferedWriter bw = null;
 		try {
 			String database = configs.get("{dataType}");
 //			System.out.println(database);
@@ -122,8 +123,11 @@ public class Configservice implements IConfigService {
 			String nPath = path+"/"+configs.get("{artifactId}")+"/src/main/resources";
 			File f = new File(nPath);
 			if(!f.exists()) f.mkdirs();
-			fw = new FileWriter(f+"/application.properties");
-			fw.write(fileStr);
+//			fw = new FileWriter(f+"/application.properties");
+//			fw.write(fileStr);
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f+"/application.properties"), "UTF-8"));
+			bw.write(fileStr);
+			bw.flush();
  		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -133,7 +137,7 @@ public class Configservice implements IConfigService {
 				e.printStackTrace();
 			}
 			try {
-				if(fw!=null) fw.close();
+				if(bw!=null) bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -236,7 +240,9 @@ public class Configservice implements IConfigService {
 	private void generateApplicationPomByMap(String path, Map<String, String> configs) {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;
-		FileWriter fw = null;
+//		FileWriter fw = null;
+		BufferedWriter bw = null;
+
 		try {
 			String tfile = "pom.templates";
 			br = new BufferedReader(new InputStreamReader(
@@ -257,8 +263,11 @@ public class Configservice implements IConfigService {
 			String nPath = path+"/"+configs.get("{artifactId}");
 			File f = new File(nPath);
 			if(!f.exists()) f.mkdirs();
-			fw = new FileWriter(f+"/pom.xml");
-			fw.write(fileStr);
+//			fw = new FileWriter(f+"/pom.xml");
+//			fw.write(fileStr);
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f+"/pom.xml"), "UTF-8"));
+			bw.write(fileStr);
+			bw.flush();
  		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -268,7 +277,7 @@ public class Configservice implements IConfigService {
 				e.printStackTrace();
 			}
 			try {
-				if(fw!=null) fw.close();
+				if(bw!=null) bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -359,15 +368,19 @@ public class Configservice implements IConfigService {
 
 		sb.append("}\n");
 		
-		FileWriter fw = null;
+//		FileWriter fw = null;
+		BufferedWriter bw = null;
 		try {
-			fw = new FileWriter(npath+"/"+afile);
-			fw.write(sb.toString());
+//			fw = new FileWriter(npath+"/"+afile);
+//			fw.write(sb.toString());
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(npath+"/"+afile), "UTF-8"));
+			bw.write(sb.toString());
+			bw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(fw!=null) fw.close();
+				if(bw!=null) bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

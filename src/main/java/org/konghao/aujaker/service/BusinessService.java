@@ -1,14 +1,16 @@
 package org.konghao.aujaker.service;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.FinalValue;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BusinessService implements IBusinessService {
@@ -34,9 +36,11 @@ public class BusinessService implements IBusinessService {
 	 */
 	private void generateServiceImpl(ClassEntity entity, String path) {
 		String file = path+"/"+entity.getClassName()+"Service.java";
-		FileWriter fw = null;
+//		FileWriter fw = null;
+		BufferedWriter bw = null;
 		try {
-			fw = new FileWriter(file);
+//			fw = new FileWriter(file);
+			bw = new BufferedWriter( new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 			StringBuffer sb = new StringBuffer();
 			//生成package
 			sb.append("package ").append(entity.getPkgName()).append(".service;\n\n");
@@ -116,12 +120,13 @@ public class BusinessService implements IBusinessService {
 			sb.append("}\n");
 			
 			
-			fw.write(sb.toString());
+			bw.write(sb.toString());
+			bw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(fw!=null) fw.close();
+				if(bw!=null) bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -135,9 +140,10 @@ public class BusinessService implements IBusinessService {
 	 */
 	private void generateServiceInterface(ClassEntity entity, String path) {
 		String file = path+"/I"+entity.getClassName()+"Service.java";
-		FileWriter fw = null;
+		BufferedWriter bw = null;
 		try {
-			fw = new FileWriter(file);
+//			fw = new FileWriter(file);
+			bw = new BufferedWriter( new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 			StringBuffer sb = new StringBuffer();
 			//生成包
 			sb.append("package ").append(entity.getPkgName()).append(".service;\n\n");
@@ -154,12 +160,13 @@ public class BusinessService implements IBusinessService {
 			  .append("extends IBaseService<").append(entity.getClassName()).append(",")
 			  .append(CommonKit.getObjType(CommonKit.getPkType(entity))).append("> {\n\n}");
 			
-			fw.write(sb.toString());
+			bw.write(sb.toString());
+			bw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(fw!=null) fw.close();
+				if(bw!=null) bw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
