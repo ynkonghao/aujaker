@@ -1,8 +1,11 @@
 package org.konghao.aujaker.controller;
 
 import org.apache.commons.io.FileUtils;
+import org.konghao.aujaker.dto.ResDto;
 import org.konghao.aujaker.service.IProjectService;
 import org.konghao.aujaker.tools.ConfigTools;
+import org.konghao.aujaker.tools.ConstructionSessionTools;
+import org.konghao.aujaker.tools.IPTools;
 import org.konghao.aujaker.tools.RecordTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,11 +42,13 @@ public class IndexController {
    
     @PostMapping(value="uploadXml")
     public @ResponseBody
-    String uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
+    ResDto uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
+        String dirName = UUID.randomUUID().toString();
+        ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "0", null);
         try {
             if(files.length>=1) {
                 String fileName = files[0].getOriginalFilename();
-                String dirName = UUID.randomUUID().toString();
+
                 File targetFile = new File(configTools.getUploadPath("/item/"+ dirName)+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 
@@ -51,16 +56,19 @@ public class IndexController {
 
                 String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 
-
-                recordTools.addRecord(RecordTools.XML_TYPE, request.getRemoteAddr());
-                return path;
+//                recordTools.addRecord(RecordTools.XML_TYPE, request.getRemoteAddr());
+                ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "1", path);
+                recordTools.addRecord(RecordTools.XML_TYPE, IPTools.getIpAddress(request));
+                return new ResDto("1", path);
             } else {
             }
-            return "1";
+            return new ResDto("0", "未检测到上传文件");
         } catch (Exception e) {
 //            throw new SystemException("文件解析出错");
             e.printStackTrace();
-            return "0";
+//            return "0";
+            ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "0", "创建项目出错："+e.getMessage());
+            return new ResDto("0", "创建项目出错："+e.getMessage());
         }
     }
 
@@ -70,10 +78,13 @@ public class IndexController {
 
     @GetMapping(value = "record")
     public String record(Model model, HttpServletRequest request) {
-        System.out.println("======"+request.getAttribute("X-Real-IP"));
-        System.out.println("------"+request.getAttribute("X-real-ip"));
-        System.out.println("------"+request.getRemoteAddr());
         model.addAttribute("datas", recordTools.readRecord());
         return "record";
+    }
+
+    @GetMapping(value = "items")
+    public String items(Model model, HttpServletRequest request) {
+        model.addAttribute("datas", ConstructionSessionTools.getItems(request));
+        return "items";
     }
 }

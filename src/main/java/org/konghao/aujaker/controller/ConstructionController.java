@@ -146,18 +146,22 @@ public class ConstructionController {
     @PostMapping(value = "build")
     public @ResponseBody
     ResDto build(HttpServletRequest request) {
+        String dirName = System.currentTimeMillis()+"";
+        ConstructionSessionTools.addItem(request, RecordTools.WEB_TYPE, dirName, "0", null);
         try {
-            String dirName = System.currentTimeMillis()+"";
+
             File targetFile = new File(configTools.getUploadPath("/item/"+dirName)+"/"+dirName+".xml");
             BuildItemTools.buildXml(request, targetFile);
             String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
 
             String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 //            recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());
-            recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());
+            ConstructionSessionTools.addItem(request, RecordTools.WEB_TYPE, dirName, "1", path);
+            recordTools.addRecord(RecordTools.WEB_TYPE, IPTools.getIpAddress(request));
             return new ResDto("1", path);
         } catch (Exception e) {
             e.printStackTrace();
+            ConstructionSessionTools.addItem(request, RecordTools.WEB_TYPE, dirName, "0", "创建项目出错："+e.getMessage());
             return new ResDto("0", e.getMessage());
         }
     }
