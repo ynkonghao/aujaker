@@ -22,7 +22,7 @@ public class TestTemplatesService implements ITestTemplatesService {
 		BufferedWriter bw = null;
 		try {
 //			fw = new FileWriter(path+"/Test"+entity.getClassName()+type+".java");
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path+"/Test"+entity.getClassName()+type+".java"), "UTF-8"));
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path+"/"+entity.getClassName()+type+"Test.java"), "UTF-8"));
 			StringBuffer sb = new StringBuffer();
 			
 			sb.append("package ").append(entity.getPkgName())
@@ -43,8 +43,8 @@ public class TestTemplatesService implements ITestTemplatesService {
 			
 			sb.append("@RunWith(SpringRunner.class)\n");
 			sb.append("@SpringBootTest\n");
-			sb.append("public class Test").append(entity.getClassName()).append(type)
-				.append(" {\n\n");
+			sb.append("public class ").append(entity.getClassName()).append(type)
+				.append("Test {\n\n");
 			
 			String oname = CommonKit.generateVarName(entity)+type;
 			

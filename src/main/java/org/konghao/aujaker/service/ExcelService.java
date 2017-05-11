@@ -165,13 +165,13 @@ public class ExcelService implements IExcelService {
 			
 			sb.append("@RunWith(SpringRunner.class)\n");
 			sb.append("@SpringBootTest\n");
-			sb.append("public class TestExcelImport {\n\n");
+			sb.append("public class ExcelImportTest {\n\n");
 			
 			sb.append("\tprivate Workbook wb;\n\n");
 			sb.append(generateAutoWire(wb));
 			sb.append("\t@Before\n");
 			sb.append("\tpublic void before() throws Exception {\n");
-			sb.append("\t\twb = WorkbookFactory.create(TestExcelImport.class.getClassLoader().getResourceAsStream(\""+xlsPath+"\"));\n");
+			sb.append("\t\twb = WorkbookFactory.create(ExcelImportTest.class.getClassLoader().getResourceAsStream(\""+xlsPath+"\"));\n");
 			sb.append("\t}\n\n");
 			
 			sb.append(generateImport(wb));
@@ -179,7 +179,7 @@ public class ExcelService implements IExcelService {
 			sb.append("}\n");
 			BufferedWriter bw = null;
 			try {
-				bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(npath+"/TestExcelImport.java"), "utf-8"));
+				bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(npath+"/ExcelImportTest.java"), "utf-8"));
 				bw.write(sb.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
