@@ -17,19 +17,9 @@
 
 <!-- model中存储了所有的实体类，package必须写，说明数据库的包 -->
 	 <model>
-	 <class className="StudentSpecial" tableName="t_spe_stu" comment="学生信息" author="ynkonghao" classShowName="学生">
-		 	<properties>
-	 			<prop name="id" columnName="id" type="String" isLob="true" comment="学生id" isPk="true" pkType="1"/>
-	 			<prop name="name" type="String" comment="学生名称" />
-	 			<prop name="sfzh" type="String" comment="身份证号"/>
-	 			<prop name="cid" type="Integer" comment="班级id"/>
-	 			<prop name="createDate" columnName="create_date" type="java.util.Date" comment="创建日期"/>
-	 		</properties>
-	 	</class>
-	 	
 	 	<class className="Special" tableName="t_spe" comment="专业信息" author="ynkonghao" classShowName="专业">
 		 	<properties>
-	 			<prop name="id" columnName="id" type="String" isLob="true" comment="学生id" isPk="true" pkType="1"/>
+	 			<prop name="id" columnName="id" type="String" isLob="true" comment="专业id" isPk="true" pkType="0"/>
 	 			<prop name="name" type="String" comment="学生名称" />
 	 			<prop name="sfzh" type="String" comment="身份证号"/>
 	 			<prop name="cid" type="Integer" comment="班级id"/>
