@@ -1,17 +1,13 @@
 package org.konghao.aujaker.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Map;
-
 import org.apache.commons.io.FileUtils;
 import org.konghao.aujaker.kit.TarAndGzipUtil;
 import org.konghao.aujaker.model.FinalValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.util.Map;
 
 @Service
 public class ProjectService implements IProjectService {
@@ -130,7 +126,7 @@ public class ProjectService implements IProjectService {
 			});
 			//拷贝jar文件
 			FileUtils.copyFileToDirectory(jarFile[0], pfile);
-			
+
 			//拷贝文件夹
 			FileUtils.copyDirectory(new File(mpath+"/src"), new File(spath+"/src"),new FileFilter() {
 				@Override
@@ -139,7 +135,7 @@ public class ProjectService implements IProjectService {
 					return true;
 				}
 			});
-			
+
 			FileUtils.copyFileToDirectory(new File(mpath+"/pom.xml"), sfile);
 			//打成tar包
 			TarAndGzipUtil.getInstance().tarFile(ppath);

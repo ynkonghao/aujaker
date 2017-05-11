@@ -321,7 +321,8 @@ public class Configservice implements IConfigService {
 	@Override
 	public void generateApplicationConfig(String path,String groupId,String artifactId) {
 		String npath = CommonKit.generateApplicationPath(path, groupId, artifactId);
-		String afile = CommonKit.upcaseFirst(artifactId)+"Application.java";
+//		String afile = CommonKit.upcaseFirst(artifactId)+"Application.java";
+		String afile = "AujakerDemoApplication.java";
 		StringBuffer sb = new StringBuffer();
 		sb.append("package ").append(groupId).append(";\n");
 		sb.append("import org.konghao.reposiotry.base.BaseRepositoryFactoryBean;\n");
@@ -337,9 +338,11 @@ public class Configservice implements IConfigService {
 			.append("\trepositoryFactoryBeanClass = BaseRepositoryFactoryBean.class//指定自己的工厂\n");
 		sb.append(")\n");
 		sb.append("@SpringBootApplication\n");
-		sb.append("public class ").append(CommonKit.upcaseFirst(artifactId)).append("Application {\n");
+//		sb.append("public class ").append(CommonKit.upcaseFirst(artifactId)).append("Application {\n");
+		sb.append("public class AujakerDemoApplication {\n");
 		sb.append("\tpublic static void main(String[] args) {\n");
-		sb.append("\t\tSpringApplication.run("+CommonKit.upcaseFirst(artifactId)+"Application.class,args);\n");
+//		sb.append("\t\tSpringApplication.run("+CommonKit.upcaseFirst(artifactId)+"Application.class,args);\n");
+		sb.append("\t\tSpringApplication.run(AujakerDemoApplication.class,args);\n");
 		sb.append("\t}\n");
 
 		sb.append("\n\t@Bean\n" +

@@ -1,9 +1,6 @@
 package org.konghao.aujaker.tools;
 
-import org.konghao.aujaker.dto.ClsDto;
-import org.konghao.aujaker.dto.DBDto;
-import org.konghao.aujaker.dto.MavenDto;
-import org.konghao.aujaker.dto.PropertyDto;
+import org.konghao.aujaker.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,7 +15,24 @@ public class ConstructionSessionTools {
     private static final String MAVEN_NAME = "maven-session";
     private static final String DB_NAME = "db-session";
     private static final String CLS_NAME = "cls-session";
-    private static final String DIR_NAME = "dir-names";
+    private static final String ITEM_NAME = "cur-item-list";
+
+    public static void addItem(HttpServletRequest request, String type, String name, String status, String path) {
+        ItemDto dto = new ItemDto(type, name, status);
+        if(path!=null && !"".equals(path)) {dto.setPath(path);}
+        List<ItemDto> list = getItems(request);
+        if(list.contains(dto)) {list.remove(dto);}
+        /*for(ItemDto d : list) {
+            if(d.getName().equals(name)) {list.remove(d);}
+        }*/
+        list.add(dto);
+        request.getSession().setAttribute(ITEM_NAME, list);
+    }
+
+    public static List<ItemDto> getItems(HttpServletRequest request) {
+        List<ItemDto> res = (List<ItemDto>) request.getSession().getAttribute(ITEM_NAME);
+        return res==null?new ArrayList<>():res;
+    }
 
     public static void saveMaven(HttpServletRequest request, String groupId, String artifactId) {
         MavenDto dto = new MavenDto(groupId, artifactId);

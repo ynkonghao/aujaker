@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
+    <head>
+        <title>自动代码管理系统</title>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link type="text/css" rel="stylesheet" href="/web/index.css"/>
+    </head>
+    <body>
+        <div th:fragment="content" th:remove="tag">
+            <div class="container">
+                <div class="page-header">
+                    <h1>我创建中的项目（<b th:text="${#lists.size(datas)}"></b>） <small>临时存储</small></h1>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>创建方式</th>
+                            <th>提交时间</th>
+                            <th>状态</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="obj : ${datas}">
+                            <td th:switch="${obj.type}">
+                                <span th:case="1">XML文件</span>
+                                <span th:case="2">在线表单</span>
+                                <span th:case="3">Excel表格</span>
+                            </td>
+                            <td th:text="${obj.date}"></td>
+                            <td th:text="${obj.status eq '1'?'已完成':'未完成'}"></td>
+                            <td>
+                                <a th:href="${obj.path}" th:if="${obj.status eq '1'}"><i class="fa fa-download"></i> 创建完成，点击下载</a>
+                                <div th:if="${obj.status eq '0'}" th:text="${(obj.path eq null or obj.path eq '')?'创建中……':obj.path}">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+	</body>
+</html>
