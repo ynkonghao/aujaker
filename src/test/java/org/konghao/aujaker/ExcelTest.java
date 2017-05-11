@@ -34,4 +34,9 @@ public class ExcelTest {
 			}
 		}
 	}
+	
+	@Test
+	public void testExcelTest() {
+		excelService.generateImpotTest("d:", "test.xlsx");
+	}
 }

@@ -167,6 +167,7 @@ public class ProjectService implements IProjectService {
 		controllerService.generateControllers(path, maps);
 		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
+		excelService.generateImpotTest(path, xlsFile);
 		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
 
 		this.generateReleasePackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));

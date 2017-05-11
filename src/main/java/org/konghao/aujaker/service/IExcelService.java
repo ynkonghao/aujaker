@@ -15,4 +15,10 @@ public interface IExcelService {
 	 * @return
 	 */
 	public Map<String,Object> xlsToEntity(String path);
+	
+	/**
+	 * 根据Excel生成Test的测试类
+	 * @param path
+	 */
+	public void generateImpotTest(String destPath,String xlsPath);
 }
