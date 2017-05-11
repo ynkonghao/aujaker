@@ -204,6 +204,7 @@ public class ExcelService implements IExcelService {
 			String cname = snameToClassname(sheet.getSheetName());
 			sb.append("\t@Test\n");
 			sb.append("\tpublic void testImport").append(cname).append("() {\n");
+			sb.append("\t\tSystem.out.println(\"====test import======\");\n");
 			sb.append("\t\tSheet sheet = wb.getSheet(\""+sheet.getSheetName()+"\");\n");
 			sb.append("\t\tMap<Integer,String> maps = ExcelKit.sheetToProperties(sheet);\n");
 			sb.append("\t\tList<Object> objs = ExcelKit.initObj(\""+FinalValue.EXCEL_GROUPID+".model.\"+ExcelKit.sheetToClassName(sheet),sheet,maps);\n");
