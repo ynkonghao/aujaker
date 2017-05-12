@@ -1,5 +1,6 @@
 package org.konghao.aujaker.service;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 /**
@@ -15,10 +16,21 @@ public interface IExcelService {
 	 * @return
 	 */
 	public Map<String,Object> xlsToEntity(String path);
+
+	/**
+	 * 根据excel来生成实体对象
+	 * @param filePath
+	 * @return
+	 */
+	Map<String,Object> xlsToEntityByFile(String filePath);
 	
 	/**
 	 * 根据Excel生成Test的测试类
-	 * @param path
 	 */
 	public void generateImpotTest(String destPath,String xlsPath);
+
+	/**
+	 * 根据Excel生成Test的测试类
+	 */
+	public void generateImpotTestByFile(String destPath,String xlsFilePath);
 }

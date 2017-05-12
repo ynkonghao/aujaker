@@ -10,10 +10,7 @@ import org.konghao.aujaker.tools.RecordTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +21,8 @@ import java.util.UUID;
  * Created by 钟述林 393156105@qq.com on 2017/5/4 10:14.
  */
 @Controller
-public class IndexController {
+@RequestMapping(value = "excel")
+public class ExcelController {
 
     @Autowired
     private ConfigTools configTools;
@@ -37,12 +35,12 @@ public class IndexController {
 
     @GetMapping({"", "/", "index", "/index"})
     public String index() {
-        return "index";
+        return "excel/index";
     }
    
-    @PostMapping(value="uploadXml")
+    @PostMapping(value="uploadExcel")
     public @ResponseBody
-    ResDto uploadXml(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
+    ResDto uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
         String dirName = UUID.randomUUID().toString();
         ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "0", null);
         try {
@@ -52,13 +50,13 @@ public class IndexController {
                 File targetFile = new File(configTools.getUploadPath("/item/"+ dirName)+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 
-                String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
+                String artId = projectService.initProjectByXlsFile(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
 
                 String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 
 //                recordTools.addRecord(RecordTools.XML_TYPE, request.getRemoteAddr());
-                ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "1", path);
-                recordTools.addRecord(RecordTools.XML_TYPE, IPTools.getIpAddress(request));
+                ConstructionSessionTools.addItem(request, RecordTools.EXCEL_TYPE, dirName, "1", path);
+                recordTools.addRecord(RecordTools.EXCEL_TYPE, IPTools.getIpAddress(request));
                 return new ResDto("1", path);
             } else {
             }

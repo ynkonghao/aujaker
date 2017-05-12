@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         <link type="text/css" rel="stylesheet" href="/web/index.css"/>
-        <script type="text/javascript" src="/web/upload.js"></script>
+        <script type="text/javascript" src="/web/uploadByExcel.js"></script>
         <script type="text/javascript">
             $(function () {
               $('[data-toggle="tooltip"]').tooltip()
@@ -23,15 +23,15 @@
         <div th:fragment="content" th:remove="tag">
             <div class="container img text-center"><img src="/web/aujaker-logo.png"/></div>
             <div class="container">
-                <div class="input-group upload-part input-group-lg" data-toggle="tooltip" data-placement="bottom" title="请选择XML文件上传，可点击上方“模板下载”参考XML文件格式">
+                <div class="input-group upload-part input-group-lg" data-toggle="tooltip" data-placement="bottom" title="请选择Excel文件上传，可点击上方“Excel模板下载”参考文件格式">
                     <input type="file" class="form-control" onchange="uploadFile(this)" placeholder="Recipient's username" aria-describedby="basic-addon2"/>
-                    <span class="input-group-addon" id="generate-item"><i class="fa fa-upload"></i> 选择XML文件上传</span>
+                    <span class="input-group-addon" id="generate-item"><i class="fa fa-upload"></i> 选择Excel文件上传</span>
                 </div>
 
                 <div class="container-fluid text-center" style="clear:both; width:100%;">
                     <h1 class="show-word text-center">让JAVA开发变得更容易</h1>
                     <div class="show-remind text-center">
-                        <p style="color:#a20;">上传XML文件创建项目，可点击上方“XML模板下载”参考文件格式</p>
+                        <p style="color:#a20;">上传Excel文件创建项目，可点击上方“Excel模板下载”参考文件格式</p>
                         <p>基于SpringBoot的java代码生成工具</p>
                         <p>根据模板编写xml，即可生成一个基本的代码模板</p>
                         <p>Beta0.1版本</p>

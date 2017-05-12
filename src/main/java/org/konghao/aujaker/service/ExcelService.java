@@ -1,30 +1,18 @@
 package org.konghao.aujaker.service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.konghao.aujaker.kit.CommonKit;
 import org.konghao.aujaker.kit.PinyinUtil;
 import org.konghao.aujaker.model.ClassEntity;
 import org.konghao.aujaker.model.FinalValue;
 import org.konghao.aujaker.model.PropertiesBaseEntity;
 import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.util.*;
 
 @Service
 public class ExcelService implements IExcelService {
@@ -37,6 +25,20 @@ public class ExcelService implements IExcelService {
 	}
 	@Override
 	public Map<String, Object> xlsToEntity(String path) {
+		return xlsToEntityByFile(ExcelService.class.getClassLoader().getResourceAsStream(path));
+	}
+
+	@Override
+	public Map<String, Object> xlsToEntityByFile(String filePath) {
+		try {
+			return xlsToEntityByFile(new FileInputStream(new File(filePath)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private Map<String, Object> xlsToEntityByFile(InputStream is) {
 		Workbook wb = null;
 		Map<String,Object> maps = new HashMap<String,Object>();
 		List<ClassEntity> entitys = new ArrayList<ClassEntity>();
@@ -44,7 +46,7 @@ public class ExcelService implements IExcelService {
 		maps.put(FinalValue.GROUP_ID, FinalValue.EXCEL_GROUPID);
 		maps.put(FinalValue.ENTITY, entitys);
 		try {
-			wb = WorkbookFactory.create(ExcelService.class.getClassLoader().getResourceAsStream(path));
+			wb = WorkbookFactory.create(is);
 			Iterator<Sheet> sheets = wb.sheetIterator();
 			while(sheets.hasNext()) {
 				ClassEntity ce = generateClassByXls(sheets.next());
@@ -139,13 +141,22 @@ public class ExcelService implements IExcelService {
 	
 	@Override
 	public void generateImpotTest(String destPath,String xlsPath) {
+		generateImpotTest(destPath, new File(ExcelService.class.getClassLoader().getResource(xlsPath).getFile()));
+	}
+
+	@Override
+	public void generateImpotTestByFile(String destPath,String xlsFilePath) {
+		generateImpotTest(destPath, new File(xlsFilePath));
+	}
+
+	private void generateImpotTest(String destPath, File file) {
 		try {
 			Workbook wb = null;
-			wb = WorkbookFactory.create(ExcelService.class.getClassLoader().getResourceAsStream(xlsPath));
+			wb = WorkbookFactory.create(new FileInputStream(file));
 			String npath = destPath+"/"+FinalValue.EXCEL_ARTIFACTID;
 			//拷贝文件
-			FileUtils.copyInputStreamToFile(ExcelService.class.getClassLoader().getResourceAsStream(xlsPath), 
-					new File(npath+"/src/main/resources/"+xlsPath));
+			FileUtils.copyFile(file,
+					new File(npath+"/src/main/resources/"+file.getName()));
 			npath = npath+"/src/test/java/"+CommonKit.packageToPath(FinalValue.EXCEL_GROUPID);
 			File f = new File(npath);
 			if(!f.exists()) f.mkdirs();
@@ -162,20 +173,20 @@ public class ExcelService implements IExcelService {
 			sb.append("import org.springframework.test.context.junit4.SpringRunner;\n");
 			sb.append("import java.util.List;\n");
 			sb.append("import java.util.Map;\n\n");
-			
+
 			sb.append("@RunWith(SpringRunner.class)\n");
 			sb.append("@SpringBootTest\n");
 			sb.append("public class ExcelImportTest {\n\n");
-			
+
 			sb.append("\tprivate Workbook wb;\n\n");
 			sb.append(generateAutoWire(wb));
 			sb.append("\t@Before\n");
 			sb.append("\tpublic void before() throws Exception {\n");
-			sb.append("\t\twb = WorkbookFactory.create(ExcelImportTest.class.getClassLoader().getResourceAsStream(\""+xlsPath+"\"));\n");
+			sb.append("\t\twb = WorkbookFactory.create(ExcelImportTest.class.getClassLoader().getResourceAsStream(\""+file.getName()+"\"));\n");
 			sb.append("\t}\n\n");
-			
+
 			sb.append(generateImport(wb));
-			
+
 			sb.append("}\n");
 			BufferedWriter bw = null;
 			try {
@@ -204,7 +215,6 @@ public class ExcelService implements IExcelService {
 			String cname = snameToClassname(sheet.getSheetName());
 			sb.append("\t@Test\n");
 			sb.append("\tpublic void testImport").append(cname).append("() {\n");
-			sb.append("\t\tSystem.out.println(\"====test import======\");\n");
 			sb.append("\t\tSheet sheet = wb.getSheet(\""+sheet.getSheetName()+"\");\n");
 			sb.append("\t\tMap<Integer,String> maps = ExcelKit.sheetToProperties(sheet);\n");
 			sb.append("\t\tList<Object> objs = ExcelKit.initObj(\""+FinalValue.EXCEL_GROUPID+".model.\"+ExcelKit.sheetToClassName(sheet),sheet,maps);\n");

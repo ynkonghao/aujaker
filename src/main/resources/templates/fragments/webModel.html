@@ -32,13 +32,25 @@
                     <div class="col-md-5 left-nav">
                         <ul class="top-nav-ul">
                             <li><a href="/">XML生成项目</a></li>
+                            <li><a href="/excel/index">Excel生成项目</a></li>
                             <li><a href="/construction/index">在线创建项目</a></li>
                         </ul>
                     </div>
                     <div class="col-md-2"><img src="/web/logo.jpg" style="width:100%;margin-top:5px;text-align:center;"/></div>
                     <div class="col-md-5 right-nav">
                         <ul class="top-nav-ul">
-                            <li><a target="_blank" href="/templates/aujaker.xml">模板下载</a></li>
+                            <li>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        模板下载
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a target="_blank" href="/templates/aujaker.xml">XML模板下载</a></li>
+                                        <li><a target="_blank" href="/templates/testobj.xls">Excel模板下载</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                             <!--<li><a href="">版本信息</a></li>-->
                             <li><a href="/comment/api">使用说明</a></li>
                             <!--<li><a href="">视频教程</a></li>-->
@@ -56,7 +68,7 @@
         </div>
 
         <nav class="navbar navbar-fixed-bottom web-model-bottom">
-            <p>开发人员：孔浩、钟述林、周勤生</p>
+            <p>开发人员：孔浩、钟述林、周勤生、陈绍友</p>
         </nav>
         <script>
         var _hmt = _hmt || [];
