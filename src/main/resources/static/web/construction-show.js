@@ -30,6 +30,8 @@ function saveItem(obj) {
                     alert("出现错误："+res.msg);
                 }
             }, "json");
+
+            window.location.href = "/items";
         }
     }
 }

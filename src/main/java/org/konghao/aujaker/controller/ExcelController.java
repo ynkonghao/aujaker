@@ -42,7 +42,7 @@ public class ExcelController {
     public @ResponseBody
     ResDto uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
         String dirName = UUID.randomUUID().toString();
-        ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "0", null);
+        ConstructionSessionTools.addItem(request, RecordTools.EXCEL_TYPE, dirName, "0", null);
         try {
             if(files.length>=1) {
                 String fileName = files[0].getOriginalFilename();
@@ -65,7 +65,7 @@ public class ExcelController {
 //            throw new SystemException("文件解析出错");
             e.printStackTrace();
 //            return "0";
-            ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "0", "创建项目出错："+e.getMessage());
+            ConstructionSessionTools.addItem(request, RecordTools.EXCEL_TYPE, dirName, "0", "创建项目出错："+e.getMessage());
             return new ResDto("0", "创建项目出错："+e.getMessage());
         }
     }

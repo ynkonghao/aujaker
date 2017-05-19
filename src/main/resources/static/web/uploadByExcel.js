@@ -39,10 +39,11 @@ function uploadFile(obj) {
                         window.location.href = res.msg;
                     });
                 }
-            },
+            }/*,
             error: function(res) {
                 alert("提交出错:"+res);
-            }
+            }*/
         });
+        window.location.href = "/items";
     }
 }
