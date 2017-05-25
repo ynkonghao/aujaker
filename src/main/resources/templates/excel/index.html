@@ -21,6 +21,7 @@
     </head>
     <body>
         <div th:fragment="content" th:remove="tag">
+            <input name="hasJar" type="hidden" th:value="${hasJar}"/>
             <div class="container img text-center"><img src="/web/aujaker-logo.png"/></div>
             <div class="container">
                 <div class="input-group upload-part input-group-lg" data-toggle="tooltip" data-placement="bottom" title="请选择Excel文件上传，可点击上方“Excel模板下载”参考文件格式">

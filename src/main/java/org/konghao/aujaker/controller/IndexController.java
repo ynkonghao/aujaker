@@ -36,13 +36,14 @@ public class IndexController {
     private RecordTools recordTools;
 
     @GetMapping({"", "/", "index", "/index"})
-    public String index() {
+    public String index(Model model, String hasJar) {
+        model.addAttribute("hasJar", hasJar);
         return "index";
     }
    
     @PostMapping(value="uploadXml")
     public @ResponseBody
-    ResDto uploadXml(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
+    ResDto uploadXml(HttpServletRequest request, String hasJar, @RequestParam("file")MultipartFile[] files) {
         String dirName = UUID.randomUUID().toString();
         ConstructionSessionTools.addItem(request, RecordTools.XML_TYPE, dirName, "0", null);
         try {
@@ -52,7 +53,7 @@ public class IndexController {
                 File targetFile = new File(configTools.getUploadPath("/item/"+ dirName)+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 
-                String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
+                String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath(), "1".equals(hasJar));
 
                 String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 

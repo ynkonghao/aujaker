@@ -36,6 +36,7 @@ public class ProjectService implements IProjectService {
 	
 	@Override
 	public void initProject(String path) {
+		System.out.println("======= start build project ========");
 		Map<String,Object> maps = classEntityService.generateModelsByXml();
 		checkFileService.checkXmlFile();
 		modelService.generateModels(path, maps);
@@ -54,7 +55,8 @@ public class ProjectService implements IProjectService {
 	}
 
 	@Override
-	public String initProject(String path, String xmlFile) {
+	public String initProject(String path, String xmlFile, boolean buildJar) {
+		System.out.println("======= start build XML project ========");
 		Map<String,Object> maps = classEntityService.generateModelsByUploadXml(xmlFile);
 		checkFileService.checkXmlFileByUpload(new File(xmlFile));
 		modelService.generateModels(path, maps);
@@ -70,7 +72,9 @@ public class ProjectService implements IProjectService {
 		controllerService.generateControllers(path, maps);
 		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
-		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+		if(buildJar) {
+			this.mvnPackage(path, (String) maps.get(FinalValue.ARTIFACT_ID));
+		}
 
 		this.generateReleasePackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
 
@@ -124,8 +128,10 @@ public class ProjectService implements IProjectService {
 					return false;
 				}
 			});
-			//拷贝jar文件
-			FileUtils.copyFileToDirectory(jarFile[0], pfile);
+			if(jarFile!=null && jarFile.length>0) {
+				//拷贝jar文件
+				FileUtils.copyFileToDirectory(jarFile[0], pfile);
+			}
 
 			//拷贝文件夹
 			FileUtils.copyDirectory(new File(mpath+"/src"), new File(spath+"/src"),new FileFilter() {
@@ -147,7 +153,8 @@ public class ProjectService implements IProjectService {
 	}
 
 	@Override
-	public String initProjectByXls(String path, String xlsFile) {
+	public String initProjectByXls(String path, String xlsFile, boolean buildJar) {
+		System.out.println("======= start build Excel project ========");
 		// TODO Auto-generated method stub
 		Map<String,Object> maps = excelService.xlsToEntity(xlsFile);
 		modelService.generateModels(path, maps);
@@ -164,7 +171,9 @@ public class ProjectService implements IProjectService {
 		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
 		excelService.generateImpotTest(path, xlsFile);
-		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+		if(buildJar) {
+			this.mvnPackage(path, (String) maps.get(FinalValue.ARTIFACT_ID));
+		}
 
 		this.generateReleasePackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
 
@@ -172,7 +181,8 @@ public class ProjectService implements IProjectService {
 	}
 
 	@Override
-	public String initProjectByXlsFile(String path, String xlsFile) {
+	public String initProjectByXlsFile(String path, String xlsFile, boolean buildJar) {
+		System.out.println("======= start build Excel project ========");
 		// TODO Auto-generated method stub
 		Map<String,Object> maps = excelService.xlsToEntityByFile(xlsFile);
 		modelService.generateModels(path, maps);
@@ -189,7 +199,9 @@ public class ProjectService implements IProjectService {
 		viewService.generateViews(path, maps);
 		testTemplatesService.generateTestTemplate(path, maps,ITestTemplatesService.REPOS_TYPE);
 		excelService.generateImpotTestByFile(path, xlsFile);
-		this.mvnPackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
+		if(buildJar) {
+			this.mvnPackage(path, (String) maps.get(FinalValue.ARTIFACT_ID));
+		}
 
 		this.generateReleasePackage(path, (String)maps.get(FinalValue.ARTIFACT_ID));
 

@@ -15,6 +15,7 @@ function uploadFile(obj) {
         });*/
         var formData = new FormData();
         formData.append("file", $(obj)[0].files[0]);
+        formData.append("hasJar", $("input[name='hasJar']").val());
         $.ajax({
             url: '/excel/uploadExcel',
             type: 'POST',

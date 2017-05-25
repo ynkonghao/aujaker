@@ -16,7 +16,7 @@ function saveItem(obj) {
         } else {
             $(obj).attr("disabled", "disabled");
             $(obj).html("<i class='fa fa-spinner'></i> 项目生成中……");
-            $.post('/construction/build',{}, function(res) {
+            $.post('/construction/build',{hasJar:$("input[name='hasJar']").val()}, function(res) {
 //                console.log(res.msg);
                 if(res.code=='1') {
                     $(obj).html('<i class="fa fa-download"></i> 生成完成，点击下载');

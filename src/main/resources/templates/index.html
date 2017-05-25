@@ -13,14 +13,11 @@
 
         <link type="text/css" rel="stylesheet" href="/web/index.css"/>
         <script type="text/javascript" src="/web/upload.js"></script>
-        <script type="text/javascript">
-            $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
+
     </head>
     <body>
         <div th:fragment="content" th:remove="tag">
+            <input name="hasJar" type="hidden" th:value="${hasJar}"/>
             <div class="container img text-center"><img src="/web/aujaker-logo.png"/></div>
             <div class="container">
                 <div class="input-group upload-part input-group-lg" data-toggle="tooltip" data-placement="bottom" title="请选择XML文件上传，可点击上方“模板下载”参考XML文件格式">

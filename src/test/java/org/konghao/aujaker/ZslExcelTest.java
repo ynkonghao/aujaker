@@ -21,21 +21,21 @@ public class ZslExcelTest {
 
     @Test
     public void testXls() {
-        projectService.initProjectByXls("d:/test/xls", "testobj.xlsx");
+        projectService.initProjectByXls("d:/test/xls", "testobj.xlsx", true);
     }
 
     @Test
     public void testXls2() {
-        projectService.initProjectByXlsFile("d:/test/xls2", "D:/test/testobj.xlsx");
+        projectService.initProjectByXlsFile("d:/test/xls2", "D:/test/testobj.xlsx", true);
     }
 
     @Test
     public void testXls3() {
-        projectService.initProjectByXlsFile("d:/test/xls3", "D:/test/testobj.xls");
+        projectService.initProjectByXlsFile("d:/test/xls3", "D:/test/testobj.xls", true);
     }
 
     @Test
     public void testXls4() {
-        projectService.initProjectByXls("d:/test/xls4", "test1.xls");
+        projectService.initProjectByXls("d:/test/xls4", "test1.xls", true);
     }
 }

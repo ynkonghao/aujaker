@@ -33,11 +33,11 @@ public class ProjectServiceTest {
 
 	@Test
 	public void testInit2() {
-		projectService.initProject("D:\\temp\\upload\\aujacker\\item", "D:\\temp\\upload\\aujacker\\9287c89c-801a-4dfb-9884-e7bea6574666.xml");
+		projectService.initProject("D:\\temp\\upload\\aujacker\\item", "D:\\temp\\upload\\aujacker\\9287c89c-801a-4dfb-9884-e7bea6574666.xml", true);
 	}
 	
 	@Test
 	public void testXls() {
-		projectService.initProjectByXls("d:/test/xls", "test.xlsx");
+		projectService.initProjectByXls("d:/test/xls", "test.xlsx", true);
 	}
 }

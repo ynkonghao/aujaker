@@ -23,6 +23,11 @@
         <link rel="stylesheet" href="/basic/font-awesome-4.7.0/css/font-awesome.min.css" />
 
         <link rel="stylesheet" type="text/css" href="/web/main.css"/>
+        <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </head>
     <body>
         <div class="model-head">
@@ -31,9 +36,32 @@
                 <div class="row">
                     <div class="col-md-5 left-nav">
                         <ul class="top-nav-ul">
-                            <li><a href="/">XML生成项目</a></li>
-                            <li><a href="/excel/index">Excel生成项目</a></li>
-                            <li><a href="/construction/index">在线创建项目</a></li>
+                            <li>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        代码生成
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/">XML生成源代码</a></li>
+                                        <li><a href="/excel/index">Excel生成源代码</a></li>
+                                        <li><a href="/construction/index">在线创建项目源码</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="可生成Jar文件，但所需时间较长，处于测试阶段">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        在线编译（测试中）
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/?hasJar=1">编译XML项目</a></li>
+                                        <li><a href="/excel/index?hasJar=1">编译Excel项目</a></li>
+                                        <li><a href="/construction/index?hasJar=1">编译在线项目</a></li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-md-2"><img src="/web/logo.jpg" style="width:100%;margin-top:5px;text-align:center;"/></div>

@@ -37,18 +37,20 @@ public class ConstructionController {
     private RecordTools recordTools;
 
     @GetMapping(value = "index")
-    public String index(Model model, HttpServletRequest request) {
+    public String index(Model model, String hasJar, HttpServletRequest request) {
         model.addAttribute("maven", ConstructionSessionTools.getMave(request));
         model.addAttribute("db", ConstructionSessionTools.getDB(request));
         model.addAttribute("cls", ConstructionSessionTools.getCls(request));
+        model.addAttribute("hasJar", hasJar);
         return "construction/index";
     }
 
     @GetMapping(value = "show")
-    public String show(Model model, HttpServletRequest request) {
+    public String show(Model model, String hasJar, HttpServletRequest request) {
         model.addAttribute("maven", ConstructionSessionTools.getMave(request));
         model.addAttribute("db", ConstructionSessionTools.getDB(request));
         model.addAttribute("cls", ConstructionSessionTools.getCls(request));
+        model.addAttribute("hasJar", hasJar);
         return "construction/show";
     }
 
@@ -145,14 +147,14 @@ public class ConstructionController {
     //创建项目
     @PostMapping(value = "build")
     public @ResponseBody
-    ResDto build(HttpServletRequest request) {
+    ResDto build(HttpServletRequest request, String hasJar) {
         String dirName = System.currentTimeMillis()+"";
         ConstructionSessionTools.addItem(request, RecordTools.WEB_TYPE, dirName, "0", null);
         try {
 
             File targetFile = new File(configTools.getUploadPath("/item/"+dirName)+"/"+dirName+".xml");
             BuildItemTools.buildXml(request, targetFile);
-            String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
+            String artId = projectService.initProject(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath(), "1".equals(hasJar));
 
             String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 //            recordTools.addRecord(RecordTools.WEB_TYPE, request.getRemoteAddr());

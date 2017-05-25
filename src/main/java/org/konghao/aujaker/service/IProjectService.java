@@ -7,13 +7,13 @@ package org.konghao.aujaker.service;
  */
 public interface IProjectService {
 
-	String initProject(String path, String xmlFile);
+	String initProject(String path, String xmlFile, boolean buildJar);
 
 	public void initProject(String path);
 	
-	public String initProjectByXls(String path,String xlsFile);
+	String initProjectByXls(String path,String xlsFile, boolean buildJar);
 
-	String initProjectByXlsFile(String path,String xlsFile);
+	String initProjectByXlsFile(String path,String xlsFile, boolean buildJar);
 	/**
 	 * 通过maven对项目进行打包package
 	 * @param path

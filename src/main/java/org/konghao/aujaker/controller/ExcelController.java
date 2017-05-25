@@ -34,13 +34,14 @@ public class ExcelController {
     private RecordTools recordTools;
 
     @GetMapping({"", "/", "index", "/index"})
-    public String index() {
+    public String index(Model model, String hasJar) {
+        model.addAttribute("hasJar", hasJar);
         return "excel/index";
     }
    
     @PostMapping(value="uploadExcel")
     public @ResponseBody
-    ResDto uploadExcel(HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
+    ResDto uploadExcel(HttpServletRequest request, String hasJar, @RequestParam("file")MultipartFile[] files) {
         String dirName = UUID.randomUUID().toString();
         ConstructionSessionTools.addItem(request, RecordTools.EXCEL_TYPE, dirName, "0", null);
         try {
@@ -50,7 +51,7 @@ public class ExcelController {
                 File targetFile = new File(configTools.getUploadPath("/item/"+ dirName)+dirName+getFileName(fileName));
                 FileUtils.copyInputStreamToFile(files[0].getInputStream(), targetFile);
 
-                String artId = projectService.initProjectByXlsFile(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath());
+                String artId = projectService.initProjectByXlsFile(configTools.getUploadPath("/item/"+dirName), targetFile.getAbsolutePath(), "1".equals(hasJar));
 
                 String path = "/item/"+dirName+"/"+artId+"/"+artId+".tar.gz";
 
