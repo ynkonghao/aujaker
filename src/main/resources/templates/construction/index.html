@@ -16,6 +16,7 @@
     <body>
         <div th:fragment="content" th:remove="tag">
             <div class="container">
+                <p th:if="${hasJar eq '1'}" style="color:#F00">可生成Jar文件，但所需时间较长，处于测试阶段</p>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="panel panel-info">
